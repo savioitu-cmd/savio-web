@@ -82,3 +82,14 @@ INSERT INTO inventario_kits (id, nombre, stock, precio) VALUES
 ('kit-poda', 'Kit poda', 20, 26000.00),
 ('kit-interior', 'Kit cuidado de plantas de interior', 50, 19500.00)
 ON CONFLICT (id) DO NOTHING;
+
+-- Inserción inicial de políticas comerciales para Nora
+INSERT INTO nora_politicas_empresa (clave_politica, valor_politica, descripcion) VALUES
+('margen_ganancia_minimo', '45', 'Margen porcentual base sobre kits e insumos'),
+('criterio_visita_gratis', 'solo_si_compra_kit_recuperar', 'Condición comercial para asesoría técnica presencial bonificada'),
+('umbral_envio_gratis', '50000', 'Monto mínimo en pesos para bonificar el costo de envío')
+ON CONFLICT (clave_politica) DO UPDATE 
+SET valor_politica = EXCLUDED.valor_politica,
+    descripcion = EXCLUDED.descripcion,
+    actualizado_at = timezone('utc'::text, now());
+
