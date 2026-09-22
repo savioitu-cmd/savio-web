@@ -1,69 +1,38 @@
-export const carrito = {
-  kit: null,
-  extras: []
-};
-
-// Número leído del localStorage (configurable desde el Dashboard de Operador)
 export const WHATSAPP_CONFIG = {
   get telefono() {
     return localStorage.getItem('savio_whatsapp_number') || '5493786519242';
   }
 };
 
-export function setKitPrincipal(kit) {
-  carrito.kit = kit;
+let currentRecomendacion = null;
+
+export function setKitPrincipal(recomendacion) {
+  currentRecomendacion = recomendacion;
 }
 
-export function agregarAlCarrito(producto) {
-  const existe = carrito.extras.some(item => item.id === producto.id);
-  if (!existe) {
-    carrito.extras.push(producto);
-  }
-}
-
-export function quitarDelCarrito(productoId) {
-  carrito.extras = carrito.extras.filter(item => item.id !== productoId);
-}
-
-export function vaciarCarrito() {
-  carrito.kit = null;
-  carrito.extras = [];
-}
-
-export function calcularTotal() {
-  let total = 0;
-  if (carrito.kit && typeof carrito.kit.precio === 'number') {
-    total += carrito.kit.precio;
-  }
-  total += carrito.extras.reduce((acc, item) => acc + (item.precio || 0), 0);
-  return total;
-}
-
-export function generarMensajeWhatsApp(datosCliente) {
-  const { nombre = 'Cliente', ambiente = 'No especificado', problema = 'Mantenimiento' } = datosCliente;
-  const total = calcularTotal();
-
-  let lineasPedido = '';
-  if (carrito.kit) {
-    lineasPedido += `- 1x ${carrito.kit.nombre} ($${carrito.kit.precio.toLocaleString('es-AR')})\n`;
-  }
-
-  carrito.extras.forEach(extra => {
-    lineasPedido += `- 1x ${extra.nombre} ($${extra.precio.toLocaleString('es-AR')})\n`;
+export function generarMensajeWhatsApp(recomendacion, respuestas) {
+  const opName = localStorage.getItem('savio_operator_name') || 'Macarena';
+  const ambiente = respuestas.espacio || 'No especificado';
+  const problema = respuestas.problema || 'Mantenimiento';
+  
+  let texto = `¡Hola ${opName}! 👋 Realicé el diagnóstico botánico con Nora y mi espacio necesita atención:\n`;
+  texto += `- Ambiente: ${ambiente}\n`;
+  texto += `- Problema principal: ${problema}\n\n`;
+  texto += `🌿 *Mi Mix Personalizado (${recomendacion.kit.nombre}):*\n`;
+  
+  recomendacion.kit.productos.forEach(p => {
+    texto += `- ${p.item} ($${p.precio.toLocaleString()})\n`;
+  });
+  recomendacion.kit.herramientas.forEach(h => {
+    texto += `- ${h.item} ($${h.precio.toLocaleString()})\n`;
   });
 
-  const texto = 
-`¡Hola Savio! 👋 Mi nombre es ${nombre}. Realicé el diagnóstico botánico con Nora y mi espacio necesita atención:
-- Ambiente: ${ambiente}
-- Problema principal: ${problema}
-
-🌿 *Mi Pedido:*
-${lineasPedido.trim()}
-
-💰 *Total:* $${total.toLocaleString('es-AR')}
-
-¿Me coordinan el envío y el método de pago? ¡Muchas gracias!`;
-
-  const textoCodificado = encodeURIComponent(texto);
-  return `https://wa.me/${WHATSAPP_CONFIG.telefono}?text=${textoCodificado}`;
+  if (recomendacion.incluyeAsesoria) {
+    texto += `\n📋 *Servicio Técnico:*\n- ${recomendacion.asesoria.item} ($${recomendacion.asesoria.precio.toLocaleString()})\n`;
+  }
+  
+  texto += `\n💰 *Total Inversión:* $${recomendacion.total.toLocaleString()}\n\n`;
+  texto += `¿Me coordinan el envío y métodos de pago? ¡Gracias!`;
+  
+  return `https://wa.me/${WHATSAPP_CONFIG.telefono}?text=${encodeURIComponent(texto)}`;
 }

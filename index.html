@@ -15,6 +15,11 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
+  <!-- PWA Banner -->
+  <div class="pwa-banner" id="pwa-banner" style="display: none;">
+    SAVIO Ituzaingó está disponible como App Nativa.
+    <button id="btn-install-pwa">INSTALAR APP</button>
+  </div>
 
   <!-- Nav -->
   <nav class="site-nav" id="main-nav">
@@ -264,6 +269,36 @@
     </div>
   </div>
 
+  <!-- Btn Top -->
+  <button id="btn-top" title="Volver arriba">↑</button>
+
   <script type="module" src="app.js"></script>
+  <script>
+    // Btn Top Logic
+    const btnTop = document.getElementById('btn-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 300) btnTop.style.display = 'flex';
+      else btnTop.style.display = 'none';
+    });
+    btnTop.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
+
+    // PWA Install Logic
+    let deferredPrompt;
+    const pwaBanner = document.getElementById('pwa-banner');
+    const btnInstall = document.getElementById('btn-install-pwa');
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      pwaBanner.style.display = 'flex';
+    });
+
+    btnInstall.addEventListener('click', async () => {
+      pwaBanner.style.display = 'none';
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      deferredPrompt = null;
+    });
+  </script>
 </body>
 </html>

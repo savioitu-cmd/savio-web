@@ -1,121 +1,96 @@
 export const KITS = [
   {
     id: 'kit-recuperar',
-    nombre: 'Kit para recuperar un jardín descuidado',
-    precio: 28500,
-    imagen: 'assets/kit-recuperar.jpg',
-    productosIncluidos: [
-      'Sustrato enriquecido con biochar 20L',
-      'Bioestimulante radicular orgánico 250ml',
-      'Fertilizante regenerador NPK alto fósforo',
-      'Tijera de limpieza botánica',
-      'Guía paso a paso de choque vegetal'
+    nombre: 'Kit Rescate Litoral',
+    precioBase: 28500,
+    productos: [
+      { item: 'Sustrato enriquecido con biochar (20L)', precio: 8000 },
+      { item: 'Bioestimulante radicular orgánico (250ml)', precio: 6500 },
+      { item: 'Fertilizante regenerador NPK alto fósforo', precio: 5000 }
+    ],
+    herramientas: [
+      { item: 'Tijera de limpieza botánica', precio: 9000 }
     ]
   },
   {
     id: 'kit-mantenimiento',
-    nombre: 'Kit mantenimiento mensual',
-    precio: 22000,
-    imagen: 'assets/kit-mantenimiento.jpg',
-    productosIncluidos: [
-      'Fertilizante equilibrado orgánico 500ml',
-      'Bioestimulante foliar anti-estrés',
-      'Jabón potásico con aceite de neem 250ml',
-      'Dosificador graduado'
+    nombre: 'Kit Mantenimiento Correntino',
+    precioBase: 22000,
+    productos: [
+      { item: 'Fertilizante equilibrado orgánico (500ml)', precio: 7500 },
+      { item: 'Bioestimulante foliar anti-estrés', precio: 6000 },
+      { item: 'Jabón potásico con neem (250ml)', precio: 4500 }
+    ],
+    herramientas: [
+      { item: 'Dosificador graduado de precisión', precio: 4000 }
     ]
   },
   {
     id: 'kit-huerta',
-    nombre: 'Kit para huerta en casa',
-    precio: 24500,
-    imagen: 'assets/kit-huerta.jpg',
-    productosIncluidos: [
-      'Selección de 5 variedades de semillas de estación',
-      'Compost maduro premium 15dm³',
-      'Humus de lombriz puro 5dm³',
-      'Pala de trasplante milimetrada',
-      'Tutores de bambú natural y calendario'
+    nombre: 'Kit Huerta Urbana Ituzaingó',
+    precioBase: 24500,
+    productos: [
+      { item: 'Semillas adaptadas al clima litoral (5 var.)', precio: 6500 },
+      { item: 'Compost maduro premium (15L)', precio: 7000 },
+      { item: 'Humus de lombriz puro (5L)', precio: 5000 }
+    ],
+    herramientas: [
+      { item: 'Pala de trasplante milimetrada', precio: 6000 }
     ]
   },
   {
     id: 'kit-poda',
-    nombre: 'Kit poda',
-    precio: 26000,
-    imagen: 'assets/kit-poda.jpg',
-    productosIncluidos: [
-      'Tijera de podar bypass con hoja de acero SK5',
-      'Pasta cicatrizante natural con propóleo 150g',
-      'Guantes ergonómicos reforzados',
-      'Serrucho curvo plegable para ramas medias'
+    nombre: 'Kit Poda Profesional',
+    precioBase: 26000,
+    productos: [
+      { item: 'Pasta cicatrizante con propóleo (150g)', precio: 6000 }
+    ],
+    herramientas: [
+      { item: 'Tijera bypass acero SK5', precio: 12000 },
+      { item: 'Serrucho curvo plegable', precio: 8000 }
     ]
   },
   {
     id: 'kit-interior',
-    nombre: 'Kit cuidado de plantas de interior',
-    precio: 19500,
-    imagen: 'assets/kit-interior.jpg',
-    productosIncluidos: [
-      'Tónico y abrillantador vegetal eco 250ml',
-      'Gotas fertilizantes de absorción lenta',
-      'Medidor análogo de humedad de suelo',
-      'Pulverizador bruma ultra fina 300ml'
+    nombre: 'Kit Oasis Interior',
+    precioBase: 19500,
+    productos: [
+      { item: 'Tónico abrillantador vegetal (250ml)', precio: 5500 },
+      { item: 'Gotas fertilizantes liberación lenta', precio: 4000 }
+    ],
+    herramientas: [
+      { item: 'Medidor análogo de humedad', precio: 6000 },
+      { item: 'Pulverizador bruma fina (300ml)', precio: 4000 }
     ]
   }
 ];
 
-export const CROSS_SELL_CATALOG = {
-  regadera: { id: 'cs-regadera', nombre: 'Regadera pico fino de precisión 1.5L', precio: 8500 },
-  semillas_aromaticas: { id: 'cs-semillas', nombre: 'Mix semillas aromáticas bio', precio: 3200 },
-  sustrato_universal: { id: 'cs-sustrato', nombre: 'Sustrato universal liviano 10L', precio: 5400 },
-  pulverizador_presion: { id: 'cs-pulverizador', nombre: 'Pulverizador a presión continua 2L', precio: 9200 },
-  aceite_neem: { id: 'cs-neem', nombre: 'Preventivo Neem + Potásico listo para usar', precio: 4100 },
-  aceite_limpieza_hojas: { id: 'cs-panos', nombre: 'Paño de microfibra + limpiador de hojas', precio: 3800 },
-  tijera_precision: { id: 'cs-tijera-p', nombre: 'Tijera de despunte para esquejes', precio: 6200 },
-  guantes_nitrilo: { id: 'cs-guantes', nombre: 'Par de guantes impermeables de jardinería', precio: 2900 }
+export const ASESORIA = {
+  item: 'Asesoría Técnica SAVIO (Ing. Agrónomo)',
+  precio: 15000,
+  descripcion: 'Planificación detallada, visita técnica y seguimiento post-venta.'
 };
 
 export function recomendarKit(respuestas) {
   const { ambiente, tipo, problema, frecuencia, tamaño } = respuestas;
-
   let kitId;
-  let crossSell = [];
 
-  if (problema === 'descuidado') {
-    kitId = 'kit-recuperar';
-    crossSell = [
-      CROSS_SELL_CATALOG.pulverizador_presion,
-      tamaño === 'grande' ? CROSS_SELL_CATALOG.sustrato_universal : CROSS_SELL_CATALOG.aceite_neem
-    ];
-  } else if (tipo === 'huerta') {
-    kitId = 'kit-huerta';
-    crossSell = [
-      CROSS_SELL_CATALOG.semillas_aromaticas,
-      CROSS_SELL_CATALOG.regadera
-    ];
-  } else if (problema === 'poda') {
-    kitId = 'kit-poda';
-    crossSell = [
-      CROSS_SELL_CATALOG.guantes_nitrilo,
-      CROSS_SELL_CATALOG.tijera_precision
-    ];
-  } else if (ambiente === 'interior') {
-    kitId = 'kit-interior';
-    crossSell = [
-      CROSS_SELL_CATALOG.aceite_limpieza_hojas,
-      CROSS_SELL_CATALOG.regadera
-    ];
-  } else {
-    kitId = 'kit-mantenimiento';
-    crossSell = [
-      CROSS_SELL_CATALOG.aceite_neem,
-      frecuencia === 'alta' ? CROSS_SELL_CATALOG.pulverizador_presion : CROSS_SELL_CATALOG.sustrato_universal
-    ];
-  }
+  if (problema === 'descuidado') kitId = 'kit-recuperar';
+  else if (tipo === 'huerta' || respuestas.objetivo === 'huerta') kitId = 'kit-huerta';
+  else if (problema === 'poda') kitId = 'kit-poda';
+  else if (ambiente === 'interior' || respuestas.espacio === 'interior') kitId = 'kit-interior';
+  else kitId = 'kit-mantenimiento';
 
   const kit = KITS.find(k => k.id === kitId);
+  const incluyeAsesoria = (respuestas.objetivo === 'asesoria');
+
+  let total = kit.precioBase;
+  if (incluyeAsesoria) total += ASESORIA.precio;
 
   return {
     kit,
-    sugeridos: crossSell
+    incluyeAsesoria,
+    asesoria: ASESORIA,
+    total
   };
 }

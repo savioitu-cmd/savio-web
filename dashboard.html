@@ -3,388 +3,195 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SAVIO | Panel Administrativo</title>
+  <title>SAVIO | ERP Administrador V3</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
   <link rel="manifest" href="manifest.json">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <meta name="theme-color" content="#1C1D1B">
   <style>
     :root {
-      --grafito: #1C1D1B;
-      --oliva: #3E493D;
-      --arena: #B8A58A;
-      --marfil: #F3F0E8;
-      --dorado: #A89062;
-      --white: #fff;
-      --red: #c0392b;
-      --green: #27ae60;
+      --grafito: #1C1D1B; --oliva: #3E493D; --arena: #B8A58A; 
+      --marfil: #F3F0E8; --dorado: #A89062; --white: #fff;
       --font-serif: 'Cormorant Garamond', serif;
       --font-sans: 'Montserrat', sans-serif;
-      --radius: 8px;
-      --shadow: 0 12px 48px rgba(0,0,0,0.08);
-      --transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+      --radius: 8px; --transition: all 0.3s ease;
     }
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family: var(--font-sans);
-      background: var(--grafito);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--marfil);
-      -webkit-font-smoothing: antialiased;
-    }
+    body { font-family: var(--font-sans); background: var(--grafito); color: var(--marfil); }
 
     /* ---- LOGIN ---- */
     #login-screen {
-      width: 100%;
-      max-width: 420px;
-      padding: 2rem;
+      height: 100vh; display: flex; align-items: center; justify-content: center;
     }
-    .login-card {
-      background: #242523;
-      border: 1px solid rgba(184,165,138,0.12);
-      border-radius: var(--radius);
-      padding: 3rem 2.5rem;
-      box-shadow: var(--shadow);
-    }
-    .login-brand {
-      font-family: var(--font-serif);
-      font-size: 2.5rem;
-      color: var(--white);
-      letter-spacing: 0.12em;
-      text-align: center;
-      margin-bottom: 0.3rem;
-    }
-    .login-brand span { color: var(--dorado); }
-    .login-subtitle {
-      text-align: center;
-      font-size: 0.78rem;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      margin-bottom: 2.5rem;
-    }
-    .form-group {
-      margin-bottom: 1.2rem;
-    }
-    .form-group label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.45);
-      margin-bottom: 0.5rem;
-    }
-    .form-group input, .form-group select {
-      width: 100%;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(184,165,138,0.18);
-      color: var(--white);
-      font-family: var(--font-sans);
-      font-size: 0.95rem;
-      padding: 0.85rem 1.1rem;
-      border-radius: 4px;
-      outline: none;
-      transition: var(--transition);
-    }
-    .form-group input:focus {
-      border-color: var(--dorado);
-      background: rgba(168,144,98,0.06);
-    }
-    .btn-login {
-      width: 100%;
-      background: var(--dorado);
-      color: var(--white);
-      border: none;
-      font-family: var(--font-sans);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      padding: 1rem;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 0.5rem;
-      transition: var(--transition);
-    }
-    .btn-login:hover { background: #c4a872; }
-    .login-error {
-      display: none;
-      background: rgba(192,57,43,0.15);
-      border: 1px solid rgba(192,57,43,0.3);
-      color: #e74c3c;
-      font-size: 0.82rem;
-      padding: 0.7rem 1rem;
-      border-radius: 4px;
-      margin-top: 1rem;
-      text-align: center;
-    }
+    .login-card { background: #242523; padding: 3rem; border-radius: var(--radius); border: 1px solid rgba(184,165,138,0.12); width: 100%; max-width: 400px; text-align: center; }
+    .login-card input { width: 100%; padding: 0.8rem; margin: 0.5rem 0 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: #fff; border-radius: 4px; }
+    .btn-login { width: 100%; background: var(--dorado); border: none; padding: 1rem; color: #fff; font-weight: bold; cursor: pointer; border-radius: 4px; }
+    #login-error { color: #e74c3c; margin-top: 1rem; display: none; font-size: 0.8rem; }
 
     /* ---- DASHBOARD ---- */
-    #dashboard-screen {
-      display: none;
-      width: 100%;
-      max-width: 860px;
-      padding: 2rem;
-    }
-    .dash-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2.5rem;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-    .dash-brand {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      color: var(--white);
-      letter-spacing: 0.1em;
-    }
-    .dash-brand span { color: var(--dorado); }
-    .dash-meta {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-    .operator-badge {
-      background: rgba(62,73,61,0.6);
-      border: 1px solid rgba(62,73,61,0.8);
-      color: var(--marfil);
-      font-size: 0.78rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 99px;
-    }
-    .btn-logout {
-      background: transparent;
-      border: 1px solid rgba(255,255,255,0.15);
-      color: rgba(255,255,255,0.5);
-      font-family: var(--font-sans);
-      font-size: 0.75rem;
-      padding: 0.4rem 0.9rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: var(--transition);
-    }
-    .btn-logout:hover { border-color: var(--red); color: var(--red); }
+    #dashboard-screen { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; }
+    .header h1 { font-family: var(--font-serif); color: var(--dorado); }
+    
+    .nav-tabs { display: flex; gap: 1rem; margin-bottom: 2rem; overflow-x: auto; }
+    .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: var(--marfil); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: 4px; transition: var(--transition); white-space: nowrap; }
+    .tab-btn.active, .tab-btn:hover { background: var(--oliva); border-color: var(--oliva); }
 
-    .dash-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem;
-    }
-    .dash-card {
-      background: #242523;
-      border: 1px solid rgba(184,165,138,0.1);
-      border-radius: var(--radius);
-      padding: 2rem;
-      box-shadow: var(--shadow);
-    }
-    .dash-card.full { grid-column: 1 / -1; }
-    .dash-card-title {
-      font-family: var(--font-serif);
-      font-size: 1.4rem;
-      color: var(--white);
-      margin-bottom: 1.5rem;
-      padding-bottom: 0.8rem;
-      border-bottom: 1px solid rgba(255,255,255,0.06);
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-    .dash-card-title .icon { font-size: 1.1rem; }
+    .tab-content { display: none; background: #242523; padding: 2rem; border-radius: var(--radius); border: 1px solid rgba(184,165,138,0.1); }
+    .tab-content.active { display: block; animation: fadeIn 0.3s; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    .btn-save {
-      background: var(--oliva);
-      color: var(--white);
-      border: none;
-      font-family: var(--font-sans);
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.9rem 1.8rem;
-      border-radius: 4px;
-      cursor: pointer;
-      margin-top: 0.8rem;
-      transition: var(--transition);
-      width: 100%;
-    }
-    .btn-save:hover { background: #2a3229; }
+    /* Utils */
+    .btn-export { background: #2c3e50; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-bottom: 1rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+    th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
+    th { color: var(--dorado); text-transform: uppercase; font-size: 0.75rem; }
+    
+    /* Nora OCR */
+    .dropzone { border: 2px dashed var(--dorado); border-radius: var(--radius); padding: 3rem; text-align: center; cursor: pointer; transition: var(--transition); background: rgba(168,144,98,0.05); }
+    .dropzone:hover { background: rgba(168,144,98,0.1); }
+    .ocr-result { margin-top: 1.5rem; padding: 1rem; background: rgba(39,174,96,0.1); border-left: 4px solid #27ae60; display: none; }
+    .ocr-result p { margin-bottom: 0.5rem; font-size: 0.9rem; }
 
-    .toast {
-      display: none;
-      position: fixed;
-      bottom: 2rem;
-      right: 2rem;
-      background: var(--green);
-      color: var(--white);
-      font-size: 0.88rem;
-      font-weight: 500;
-      padding: 0.9rem 1.6rem;
-      border-radius: var(--radius);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-      z-index: 9999;
-      animation: toastIn 0.3s ease;
-    }
-    @keyframes toastIn {
-      from { opacity:0; transform:translateY(20px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-
-    .stat-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-      margin-bottom: 0;
-    }
-    .stat-item {
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 4px;
-      padding: 1.2rem;
-      text-align: center;
-    }
-    .stat-value {
-      font-family: var(--font-serif);
-      font-size: 2rem;
-      color: var(--dorado);
-      display: block;
-    }
-    .stat-label {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,0.35);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-top: 0.3rem;
-    }
-
-    .btn-goto {
-      display: inline-block;
-      background: transparent;
-      border: 1px solid rgba(184,165,138,0.25);
-      color: var(--arena);
-      font-family: var(--font-sans);
-      font-size: 0.75rem;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      padding: 0.6rem 1.2rem;
-      border-radius: 4px;
-      text-decoration: none;
-      cursor: pointer;
-      transition: var(--transition);
-      margin-top: 1rem;
-      display: block;
-      text-align: center;
-    }
-    .btn-goto:hover { background: var(--dorado); border-color: var(--dorado); color: var(--white); }
-
-    @media (max-width: 600px) {
-      .dash-grid { grid-template-columns: 1fr; }
-      .dash-card.full { grid-column: 1; }
-      .stat-grid { grid-template-columns: 1fr 1fr; }
-    }
+    /* Config Forms */
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.8rem; margin-bottom: 0.4rem; color: var(--arena); }
+    .form-group input { width: 100%; max-width: 400px; background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: #fff; padding: 0.7rem; border-radius: 4px; }
+    .btn-save { background: var(--oliva); color: #fff; border: none; padding: 0.7rem 1.5rem; cursor: pointer; border-radius: 4px; margin-top: 0.5rem; }
   </style>
 </head>
 <body>
 
-  <!-- LOGIN SCREEN -->
+  <!-- LOGIN -->
   <div id="login-screen">
     <div class="login-card">
-      <h1 class="login-brand">SAVIO<span>.</span></h1>
-      <p class="login-subtitle">Panel Administrativo</p>
-      <div class="form-group">
-        <label for="login-user">Usuario</label>
-        <input type="text" id="login-user" placeholder="admin" autocomplete="username">
-      </div>
-      <div class="form-group">
-        <label for="login-pass">Clave de Turno</label>
-        <input type="password" id="login-pass" placeholder="••••" autocomplete="current-password">
-      </div>
-      <button class="btn-login" id="btn-login">INGRESAR →</button>
-      <div class="login-error" id="login-error">⚠ Usuario o clave incorrectos.</div>
+      <h1 style="font-family: var(--font-serif); color: var(--dorado); margin-bottom: 1rem;">SAVIO ERP.</h1>
+      <input type="text" id="login-user" placeholder="Usuario (admin)">
+      <input type="password" id="login-pass" placeholder="Clave (0000)">
+      <button class="btn-login" id="btn-login">ACCEDER AL SISTEMA</button>
+      <div id="login-error">Clave incorrecta.</div>
     </div>
   </div>
 
-  <!-- DASHBOARD SCREEN -->
+  <!-- DASHBOARD -->
   <div id="dashboard-screen">
+    <div class="header">
+      <h1>SAVIO ERP.</h1>
+      <button id="btn-logout" class="btn-export" style="background:#c0392b; margin:0;">Cerrar Sesión</button>
+    </div>
 
-    <div class="dash-header">
-      <div class="dash-brand">SAVIO<span>.</span> Admin</div>
-      <div class="dash-meta">
-        <span class="operator-badge" id="badge-operator">🌿 Operador</span>
-        <button class="btn-logout" id="btn-logout">Cerrar sesión</button>
+    <div class="nav-tabs">
+      <button class="tab-btn active" data-tab="tab-crm">CRM Clientes</button>
+      <button class="tab-btn" data-tab="tab-rpm">RPM Proveedores</button>
+      <button class="tab-btn" data-tab="tab-stock">Depósito / Stock</button>
+      <button class="tab-btn" data-tab="tab-nora">Nora Contable (OCR)</button>
+      <button class="tab-btn" data-tab="tab-config">Configuración Turno</button>
+    </div>
+
+    <!-- CRM Clientes -->
+    <div id="tab-crm" class="tab-content active">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Base de Clientes</h2>
+        <div>
+          <button class="btn-export" onclick="exportPDF('crm-table', 'Clientes_SAVIO')">PDF</button>
+          <button class="btn-export" onclick="exportWord('crm-table', 'Clientes_SAVIO')">Word</button>
+        </div>
+      </div>
+      <select id="crm-filter" style="padding:0.5rem; background:#333; color:#fff; border:none; margin-bottom:1rem;">
+        <option value="todos">Todos los Filtros</option>
+        <option value="cta-corriente">Cta. Corriente</option>
+        <option value="contado">Contado</option>
+        <option value="remito">Remito</option>
+        <option value="factura">Factura</option>
+        <option value="convenio">Convenios</option>
+        <option value="licitacion">Licitaciones</option>
+      </select>
+      <div id="crm-table">
+        <table>
+          <thead><tr><th>Cliente</th><th>Tipo</th><th>Condición</th><th>Deuda / Saldo</th></tr></thead>
+          <tbody id="crm-tbody">
+            <tr data-type="cta-corriente"><td>Vivero Ituzaingó</td><td>Empresa</td><td>Cta. Corriente</td><td>-$45.000</td></tr>
+            <tr data-type="contado"><td>Juan Pérez</td><td>Final</td><td>Contado</td><td>$0</td></tr>
+            <tr data-type="licitacion"><td>Municipalidad Corrientes</td><td>Estatal</td><td>Licitación</td><td>-$120.000</td></tr>
+          </tbody>
+        </table>
       </div>
     </div>
 
-    <div class="dash-grid">
-
-      <!-- Estadísticas rápidas -->
-      <div class="dash-card full">
-        <div class="dash-card-title"><span class="icon">📊</span> Resumen del Turno</div>
-        <div class="stat-grid">
-          <div class="stat-item">
-            <span class="stat-value" id="stat-visitas">—</span>
-            <div class="stat-label">Visitas Hoy</div>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value" id="stat-consultas">—</span>
-            <div class="stat-label">Consultas Nora</div>
-          </div>
-          <div class="stat-item">
-            <span class="stat-value" id="stat-wa">—</span>
-            <div class="stat-label">Clicks WhatsApp</div>
-          </div>
-        </div>
-        <a href="index.html" target="_blank" class="btn-goto">↗ Ver sitio en producción</a>
+    <!-- RPM Proveedores -->
+    <div id="tab-rpm" class="tab-content">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Proveedores (RPM)</h2>
+        <button class="btn-export" onclick="exportPDF('rpm-table', 'Proveedores_SAVIO')">PDF</button>
       </div>
-
-      <!-- Config Operador -->
-      <div class="dash-card">
-        <div class="dash-card-title"><span class="icon">👤</span> Operador de Turno</div>
-        <div class="form-group">
-          <label for="cfg-operator-name">Nombre del Operador</label>
-          <input type="text" id="cfg-operator-name" placeholder="Ej: Macarena">
-        </div>
-        <div class="form-group">
-          <label for="cfg-whatsapp">Número WhatsApp (sin +)</label>
-          <input type="tel" id="cfg-whatsapp" placeholder="5493786519242">
-        </div>
-        <button class="btn-save" id="btn-save-operator">💾 GUARDAR OPERADOR</button>
+      <div id="rpm-table">
+        <table>
+          <thead><tr><th>Razón Social</th><th>Rubro</th><th>Pago</th><th>Próx. Vencimiento</th></tr></thead>
+          <tbody>
+            <tr><td>Sustratos del Litoral SRL</td><td>Tierra y Compost</td><td>30 días</td><td>15/10/2026</td></tr>
+            <tr><td>Semillera Nacional</td><td>Semillas</td><td>Contado</td><td>-</td></tr>
+          </tbody>
+        </table>
       </div>
-
-      <!-- Config Redes -->
-      <div class="dash-card">
-        <div class="dash-card-title"><span class="icon">📱</span> Redes Sociales</div>
-        <div class="form-group">
-          <label for="cfg-instagram">URL de Instagram</label>
-          <input type="url" id="cfg-instagram" placeholder="https://instagram.com/savioitu">
-        </div>
-        <div class="form-group">
-          <label for="cfg-facebook">URL de Facebook</label>
-          <input type="url" id="cfg-facebook" placeholder="https://facebook.com/savioitu">
-        </div>
-        <button class="btn-save" id="btn-save-redes">💾 GUARDAR REDES</button>
-      </div>
-
-      <!-- Config Nora -->
-      <div class="dash-card full">
-        <div class="dash-card-title"><span class="icon">🌿</span> Mensaje Inicial de Nora</div>
-        <div class="form-group">
-          <label for="cfg-nora-greeting">Saludo personalizado (se mostrará al abrir el chat)</label>
-          <input type="text" id="cfg-nora-greeting" placeholder="¡Hola! Te damos la bienvenida a SAVIO Ituzaingó 🌿 Soy Nora...">
-        </div>
-        <button class="btn-save" id="btn-save-nora">💾 GUARDAR MENSAJE DE NORA</button>
-      </div>
-
     </div>
+
+    <!-- Depósito / Stock -->
+    <div id="tab-stock" class="tab-content">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Depósito Ituzaingó</h2>
+        <button class="btn-export" onclick="exportWord('stock-table', 'Stock_SAVIO')">Word</button>
+      </div>
+      <div id="stock-table">
+        <table>
+          <thead><tr><th>SKU</th><th>Producto</th><th>Cantidad</th><th>Estado</th></tr></thead>
+          <tbody>
+            <tr><td>KIT-001</td><td>Kit Huerta Urbana</td><td>12</td><td style="color:#27ae60">Óptimo</td></tr>
+            <tr><td>SUB-020</td><td>Sustrato Biochar 20L</td><td>3</td><td style="color:#e67e22">Reabastecer</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Nora Contable (OCR) -->
+    <div id="tab-nora" class="tab-content">
+      <h2>Nora Asistente Contable (Simulación OCR)</h2>
+      <p style="font-size:0.9rem; color:var(--arena); margin-bottom:1.5rem;">Arrastrá aquí una factura de compra para deducción automática.</p>
+      
+      <div class="dropzone" id="ocr-dropzone">
+        <input type="file" id="ocr-input" style="display:none;" accept="image/*,.pdf">
+        <div style="font-size:2rem; margin-bottom:1rem;">📄</div>
+        Click o arrastrar documento para analizar
+      </div>
+
+      <div class="ocr-result" id="ocr-result">
+        <p><strong>Deducción completada por Nora:</strong></p>
+        <p>Subtotal: $10.000,00</p>
+        <p>IVA Crédito Fiscal (21%): $2.100,00</p>
+        <p>Gastos Logísticos Estimados: $850,00</p>
+        <p style="color:#2c3e50; font-weight:bold; margin-top:1rem;">Sugerencia de Remarcación: Aplicar mark-up del 45% para absorber envíos.</p>
+      </div>
+    </div>
+
+    <!-- Configuración -->
+    <div id="tab-config" class="tab-content">
+      <h2>Configuración Dinámica de Turno</h2>
+      <div class="form-group">
+        <label>Operador de Turno</label>
+        <input type="text" id="cfg-operator" placeholder="Ej: Macarena">
+      </div>
+      <div class="form-group">
+        <label>WhatsApp Comercial (Sin +)</label>
+        <input type="text" id="cfg-wa" placeholder="5493786519242">
+      </div>
+      <div class="form-group">
+        <label>Instagram URL</label>
+        <input type="text" id="cfg-ig" placeholder="https://instagram.com/savio">
+      </div>
+      <button class="btn-save" id="btn-save-cfg">Guardar Cambios Globales</button>
+    </div>
+
   </div>
-
-  <div class="toast" id="toast">✅ Configuración guardada correctamente.</div>
 
   <script src="dashboard.js"></script>
 </body>

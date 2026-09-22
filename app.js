@@ -2,31 +2,13 @@ import { recomendarKit } from './quiz-logic.js';
 import { setKitPrincipal, generarMensajeWhatsApp } from './whatsapp.js';
 
 // ============================================================
-// NORA — ALMA BOTÁNICA SAVIO
-// Cerebro conversacional vía Hugging Face Serverless (gratis)
+// NORA — ALMA BOTÁNICA SAVIO (V3 - Multimedia Litoral)
 // ============================================================
-
-// 🔑 TOKEN GRATUITO: obtenerlo en https://huggingface.co/settings/tokens
-// Token leído desde variable de entorno Vercel (VITE_HF_TOKEN)
-// En Vercel: Settings → Environment Variables → VITE_HF_TOKEN
-const HF_TOKEN = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HF_TOKEN)
-  ? import.meta.env.VITE_HF_TOKEN
-  : '';
-const HF_MODEL = 'HuggingFaceH4/zephyr-7b-beta';
-const HF_API   = `https://api-inference.huggingface.co/models/${HF_MODEL}`;
-
-const SYSTEM_PROMPT = `Sos Nora, la asistente botánica experta de SAVIO Ituzaingó, un comercio premium de jardinería orgánica en Buenos Aires, Argentina.
-Tu carácter: cálida, profesional, apasionada por las plantas. Usás lunfardo neutro porteño. Respondés de forma concisa (máximo 3 oraciones).
-Tu especialidad: diagnóstico de suelos, control orgánico de plagas, selección de semillas, guías de riego, nutrición vegetal y paisajismo urbano.
-Los productos que vendemos: Kit Huerta Urbana ($24.500), Kit Nutrición de Suelo ($22.000), Herramientas Premium ($26.000), Semillas de Estación ($9.800).
-Para compras o asesoría presencial, siempre invitá a hablar con Macarena por WhatsApp (+54 9 3786 519242).
-Nunca menciones otras marcas. Nunca inventes información. Si no sabés algo, derivá a Macarena.`;
-
 const NORA_STORAGE_KEY = 'savio_nora_history';
 
 document.addEventListener('DOMContentLoaded', () => {
 
-  // ---- DOM refs ----
+  // ---- DOM refs Nora ----
   const fabBtn       = document.getElementById('nora-fab-btn');
   const chatWindow   = document.getElementById('nora-chat-window');
   const closeBtn     = document.getElementById('nora-close-btn');
@@ -80,77 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     chatBody.scrollTop = chatBody.scrollHeight;
   }
 
-  // ---- Hugging Face API call ----
-  async function queryNora(userText) {
-    conversationHistory.push({ role: 'user', content: userText });
-
-    const prompt = buildPrompt(conversationHistory);
-
-    try {
-      const res = await fetch(HF_API, {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${HF_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          inputs: prompt,
-          parameters: {
-            max_new_tokens: 200,
-            temperature: 0.7,
-            return_full_text: false,
-            stop: ['</s>', '[INST]', '[/INST]']
-          }
-        })
-      });
-
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-
-      let reply = '';
-      if (Array.isArray(data) && data[0]?.generated_text) {
-        reply = data[0].generated_text.trim();
-      } else if (data.generated_text) {
-        reply = data.generated_text.trim();
-      } else {
-        throw new Error('unexpected response shape');
-      }
-
-      // Limpiar tokens residuales
-      reply = reply.replace(/\[\/INST\]|\[INST\]|<\/s>/g, '').trim();
-
-      conversationHistory.push({ role: 'assistant', content: reply });
-      persistHistory();
-      return reply;
-
-    } catch (err) {
-      console.warn('Nora HF fallback:', err.message);
-      return localFallback(userText);
-    }
-  }
-
-  function buildPrompt(history) {
-    let p = `<s>[INST] ${SYSTEM_PROMPT} [/INST]</s>\n`;
-    history.forEach((m, i) => {
-      if (m.role === 'user')      p += `[INST] ${m.content} [/INST]`;
-      if (m.role === 'assistant') p += ` ${m.content}</s>\n`;
-    });
-    return p;
-  }
-
-  function localFallback(text) {
-    const t = text.toLowerCase();
-    if (t.includes('precio') || t.includes('costo') || t.includes('vale'))
-      return 'Nuestros kits van de $9.800 a $26.000. Para conseguir el mejor para vos, escribile a Macarena por WhatsApp 🌿';
-    if (t.includes('riego') || t.includes('agua'))
-      return 'La frecuencia de riego depende del sustrato y la estación. En verano, plantas de interior cada 3-4 días; en invierno, reducí a la mitad 💧';
-    if (t.includes('plaga') || t.includes('bicho'))
-      return 'Para plagas, el jabón potásico con aceite de neem es muy efectivo. Incluido en nuestro Kit Nutrición de Suelo 🌿';
-    if (t.includes('huerta') || t.includes('semilla'))
-      return 'Nuestro Kit Huerta Urbana SAVIO es perfecto para empezar: semillas, sustrato y macetas geotextil por $24.500 🥬';
-    return 'Qué buena consulta! Para darte la respuesta más precisa, hablá con Macarena directamente por WhatsApp 🌿 +54 9 3786 519242';
-  }
-
   function persistHistory() {
     try {
       localStorage.setItem(NORA_STORAGE_KEY, JSON.stringify(conversationHistory.slice(-20)));
@@ -164,44 +75,85 @@ document.addEventListener('DOMContentLoaded', () => {
     } catch(e) {}
   }
 
-  // ---- Core send flow ----
+  function localNoraLogic(text) {
+    const t = text.toLowerCase();
+    
+    // Agronomía Correntina & Litoral
+    if (t.includes('calor') || t.includes('verano') || t.includes('corrientes'))
+      return 'El clima de Ituzaingó exige riego temprano en verano y mulching para proteger las raíces del calor intenso. Nuestras semillas toleran bien la amplitud térmica del litoral ☀️🌿';
+    if (t.includes('humedad') || t.includes('hongo'))
+      return 'Con la humedad del río Paraná, es clave no encharcar. Te sugiero un fungicida preventivo orgánico o jabón potásico con neem 💧';
+    if (t.includes('precio') || t.includes('costo') || t.includes('vale'))
+      return 'Nuestros kits van de $19.500 a $28.500. Para un presupuesto exacto, escribile a Macarena por WhatsApp 🌿';
+    if (t.includes('huerta') || t.includes('semilla'))
+      return 'El Kit Huerta Urbana es ideal para la tierra de Corrientes: sustrato aireado, semillas de estación y geotextiles por $24.500 🥬';
+    
+    return '¡Qué buena consulta! Para darte la respuesta más precisa, hablemos por WhatsApp. El operador de turno te asesora al instante 🌿';
+  }
+
   async function sendToNora(text) {
     if (!text.trim()) return;
     addMsg('user', text);
+    conversationHistory.push({ role: 'user', content: text });
     showTyping();
-    const reply = await queryNora(text);
-    hideTyping();
-    addMsg('nora', reply);
+    
+    // Simular delay neuronal
+    setTimeout(() => {
+      hideTyping();
+      const reply = localNoraLogic(text);
+      conversationHistory.push({ role: 'assistant', content: reply });
+      persistHistory();
+      addMsg('nora', reply);
+    }, 900);
   }
 
-  // ---- Inicializar Nora ----
+  // NORA MULTIMEDIA - SIMULACIÓN ÓPTIMA
+  function handleImageUpload(file) {
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      addMsg('user', `<img src="${ev.target.result}" style="max-width:100%;border-radius:4px;margin-bottom:5px;" alt="foto del terreno">`);
+      showTyping();
+      
+      // Delay de procesamiento visual 1.5s
+      setTimeout(() => {
+        hideTyping();
+        const reply = `He analizado la imagen 📷. Noto características típicas de los suelos del litoral. Te sugiero aplicar nuestro <strong>Kit Nutrición de Suelo</strong> para mejorar el drenaje y la carga orgánica. ¿Querés que te pase el link al WhatsApp de ventas? 🌿`;
+        addMsg('nora', reply);
+        addQuickReplies(['Sí, pasar a WhatsApp', 'Ver otro kit']);
+      }, 1500);
+    };
+    reader.readAsDataURL(file);
+  }
+
   function iniciarNora() {
     if (noraIniciada) return;
     noraIniciada = true;
     loadHistory();
 
+    const customGreeting = localStorage.getItem('savio_nora_greeting');
+    const opName = localStorage.getItem('savio_operator_name') || 'Macarena';
+
     setTimeout(() => {
-      addMsg('nora', '¡Hola! Te damos la bienvenida a <strong>SAVIO Ituzaingó</strong> 🌿<br>Soy Nora, tu asistente técnica y botánica personal. ¿En qué te puedo ayudar o asesorar hoy?');
-      addQuickReplies(['🌱 Quiero un kit', '🐛 Tengo una plaga', '💧 Consulta de riego', '💬 Hablar con Macarena']);
+      const msj = customGreeting || `¡Hola! Te damos la bienvenida a <strong>SAVIO Ituzaingó</strong> 🌿<br>Soy Nora, tu asistente botánica. El operador actual en WhatsApp es ${opName}. ¿En qué te ayudo?`;
+      addMsg('nora', msj);
+      addQuickReplies(['🌱 Necesito un kit', '🐛 Tengo una plaga', '📷 Subir foto de mi patio']);
     }, 0);
   }
 
-  // ---- Activar en segundo cero ----
   chatWindow.classList.remove('hidden');
   iniciarNora();
 
-  // ---- Eventos ----
   fabBtn.addEventListener('click', () => chatWindow.classList.toggle('hidden'));
   closeBtn.addEventListener('click', () => chatWindow.classList.add('hidden'));
 
   sendBtn.addEventListener('click', () => {
-    const txt = textInput.value.trim();
+    const txt = textInput.value;
     textInput.value = '';
     sendToNora(txt);
   });
   textInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
-      const txt = textInput.value.trim();
+      const txt = textInput.value;
       textInput.value = '';
       sendToNora(txt);
     }
@@ -210,23 +162,16 @@ document.addEventListener('DOMContentLoaded', () => {
   if (mediaBtn && fileInput) {
     mediaBtn.addEventListener('click', () => fileInput.click());
     fileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = (ev) => {
-        const div = document.createElement('div');
-        div.classList.add('msg', 'user');
-        div.innerHTML = `<img src="${ev.target.result}" style="max-width:100%;border-radius:4px;" alt="foto">`;
-        chatBody.appendChild(div);
-        chatBody.scrollTop = chatBody.scrollHeight;
-        setTimeout(() => addMsg('nora', 'Gracias por la foto 📷 La reviso y en un momento te doy un diagnóstico. También podés enviársela directamente a Macarena por WhatsApp para una respuesta inmediata 🌿'), 1000);
-      };
-      reader.readAsDataURL(file);
-      fileInput.value = '';
+      if (e.target.files[0]) {
+        handleImageUpload(e.target.files[0]);
+        e.target.value = '';
+      }
     });
   }
 
-  // ---- QUIZ ----
+  // ============================================================
+  // QUIZ TRANSPARENTE - MIX PERSONALIZADO
+  // ============================================================
   const btnIniciarQuiz = document.getElementById('btn-iniciar-quiz');
   const quizSection    = document.getElementById('quiz-section');
   const progressBar    = document.getElementById('quiz-progress-bar');
@@ -237,9 +182,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const respuestas = {};
 
   if (btnIniciarQuiz) {
-    btnIniciarQuiz.addEventListener('click', () => {
-      quizSection.scrollIntoView({ behavior: 'smooth' });
-    });
+    btnIniciarQuiz.addEventListener('click', () => quizSection.scrollIntoView({ behavior: 'smooth' }));
   }
 
   function showStep(n) {
@@ -257,11 +200,8 @@ document.addEventListener('DOMContentLoaded', () => {
       e.target.classList.add('selected');
       setTimeout(() => {
         currentStep++;
-        if (currentStep <= TOTAL) {
-          showStep(currentStep);
-        } else {
-          mostrarResultado();
-        }
+        if (currentStep <= TOTAL) showStep(currentStep);
+        else mostrarResultado();
       }, 280);
     });
   });
@@ -269,31 +209,42 @@ document.addEventListener('DOMContentLoaded', () => {
   function mostrarResultado() {
     progressBar.style.width = '100%';
     document.querySelectorAll('.quiz-step').forEach(s => s.classList.remove('active'));
-    const resultDiv = document.getElementById('quiz-result');
-    resultDiv.classList.add('active');
+    document.getElementById('quiz-result').classList.add('active');
     document.getElementById('quiz-current-q').textContent = TOTAL;
 
-    const rec = recomendarKit(respuestas);
-    const txtEl = document.getElementById('quiz-result-text');
-    const kitEl = document.getElementById('quiz-result-kit');
+    const recomendacion = recomendarKit(respuestas);
+    setKitPrincipal(recomendacion); // Pasa la recomendación completa a WhatsApp JS
+    
+    let html = `<div class="mix-box">`;
+    html += `<h4 class="mix-title">🌿 ${recomendacion.kit.nombre}</h4>`;
+    
+    html += `<div class="mix-section"><strong>Insumos:</strong><ul>`;
+    recomendacion.kit.productos.forEach(p => {
+      html += `<li>${p.item} <span class="price">+$${p.precio.toLocaleString()}</span></li>`;
+    });
+    html += `</ul></div>`;
 
-    if (respuestas.objetivo === 'asesoria') {
-      txtEl.textContent = 'Tu espacio merece un plan botánico profesional. Te recomendamos una Asesoría Personalizada con nuestra especialista.';
-      kitEl.innerHTML = '📋 Asesoría Personalizada SAVIO';
-      setKitPrincipal(null);
-    } else if (rec.kit) {
-      txtEl.textContent = 'Basándonos en tu espacio, horas de sol y objetivo, este es tu kit ideal:';
-      kitEl.innerHTML = `🌿 <strong>${rec.kit.nombre}</strong><br><span style="font-size:1.1rem;color:var(--dorado);">$${rec.kit.precio.toLocaleString('es-AR')}</span>`;
-      setKitPrincipal(rec.kit);
+    html += `<div class="mix-section"><strong>Herramientas:</strong><ul>`;
+    recomendacion.kit.herramientas.forEach(h => {
+      html += `<li>${h.item} <span class="price">+$${h.precio.toLocaleString()}</span></li>`;
+    });
+    html += `</ul></div>`;
+
+    if (recomendacion.incluyeAsesoria) {
+      html += `<div class="mix-section asesoria-box"><strong>Servicio de Alto Valor:</strong><ul>`;
+      html += `<li>${recomendacion.asesoria.item}<br><small>${recomendacion.asesoria.descripcion}</small> <span class="price">+$${recomendacion.asesoria.precio.toLocaleString()}</span></li>`;
+      html += `</ul></div>`;
     }
 
-    document.getElementById('btn-whatsapp-quiz').addEventListener('click', () => {
-      window.open(generarMensajeWhatsApp({
-        nombre: 'Cliente',
-        ambiente: respuestas.espacio || 'No especificado',
-        problema: respuestas.problema || 'Diagnóstico'
-      }), '_blank');
-    });
+    html += `<div class="mix-total">Inversión Total: $${recomendacion.total.toLocaleString()}</div>`;
+    html += `</div>`;
+
+    document.getElementById('quiz-result-kit').innerHTML = html;
+
+    // Actualizar WhatsApp URL global
+    document.getElementById('btn-whatsapp-quiz').onclick = () => {
+      window.open(generarMensajeWhatsApp(recomendacion, respuestas), '_blank');
+    };
   }
 
   document.getElementById('btn-quiz-reset')?.addEventListener('click', () => {
@@ -304,13 +255,12 @@ document.addEventListener('DOMContentLoaded', () => {
     showStep(1);
   });
 
-  // ---- Botones de producto → WhatsApp ----
+  // Tienda genérica WhatsApp
   document.querySelectorAll('.btn-product-wa').forEach(btn => {
     btn.addEventListener('click', () => {
-      const producto = btn.dataset.producto;
-      const msg = encodeURIComponent(`Hola Macarena 👋 Me interesa: ${producto}. ¿Podés darme más información?`);
-      window.open(`https://wa.me/5493786519242?text=${msg}`, '_blank');
+      const num = localStorage.getItem('savio_whatsapp_number') || '5493786519242';
+      const msg = encodeURIComponent(`Hola 👋 Me interesa: ${btn.dataset.producto}`);
+      window.open(`https://wa.me/${num}?text=${msg}`, '_blank');
     });
   });
-
 });
