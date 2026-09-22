@@ -7,8 +7,12 @@ import { setKitPrincipal, generarMensajeWhatsApp } from './whatsapp.js';
 // ============================================================
 
 // 🔑 TOKEN GRATUITO: obtenerlo en https://huggingface.co/settings/tokens
-const HF_TOKEN = 'hf_REEMPLAZAR_CON_TU_TOKEN'; // <-- Pegar token aquí
-const HF_MODEL = 'mistralai/Mistral-7B-Instruct-v0.3';
+// Token leído desde variable de entorno Vercel (VITE_HF_TOKEN)
+// En Vercel: Settings → Environment Variables → VITE_HF_TOKEN
+const HF_TOKEN = (typeof import.meta !== 'undefined' && import.meta.env?.VITE_HF_TOKEN)
+  ? import.meta.env.VITE_HF_TOKEN
+  : '';
+const HF_MODEL = 'HuggingFaceH4/zephyr-7b-beta';
 const HF_API   = `https://api-inference.huggingface.co/models/${HF_MODEL}`;
 
 const SYSTEM_PROMPT = `Sos Nora, la asistente botánica experta de SAVIO Ituzaingó, un comercio premium de jardinería orgánica en Buenos Aires, Argentina.
