@@ -242,10 +242,12 @@ function renderizarContenidoResultado() {
   });
 }
 
-// Nora chat simple interativo
+// Nora chat interactivo y multimedia
 const noraInput = document.getElementById('nora-user-input');
 const noraSendBtn = document.getElementById('nora-send-btn');
 const noraChatContainer = document.getElementById('nora-chat-container');
+const noraMediaBtn = document.getElementById('nora-media-btn');
+const noraFileInput = document.getElementById('nora-file-input');
 
 if (noraSendBtn && noraInput && noraChatContainer) {
   const responderNora = () => {
@@ -272,6 +274,54 @@ if (noraSendBtn && noraInput && noraChatContainer) {
   noraSendBtn.addEventListener('click', responderNora);
   noraInput.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') responderNora();
+  });
+}
+
+// Manejo de imagen y cámara para Nora
+if (noraMediaBtn && noraFileInput && noraChatContainer) {
+  noraMediaBtn.addEventListener('click', () => {
+    noraFileInput.click();
+  });
+
+  noraFileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      // Miniatura en el chat (burbuja usuario)
+      const userImgBubble = document.createElement('div');
+      userImgBubble.className = 'bubble-user';
+      userImgBubble.style.padding = '0.4rem';
+      userImgBubble.style.background = 'transparent';
+      userImgBubble.innerHTML = `
+        <img src="${event.target.result}" alt="Foto enviada" 
+          style="max-width:180px; max-height:180px; border-radius:12px; object-fit:cover; display:block; border:2px solid var(--text-primary); box-shadow:var(--shadow-subtle);">
+      `;
+      noraChatContainer.appendChild(userImgBubble);
+
+      // Indicador de análisis de Nora
+      const loadingBubble = document.createElement('div');
+      loadingBubble.className = 'nora-bubble';
+      loadingBubble.id = 'nora-analyzing-indicator';
+      loadingBubble.innerHTML = `<em>Nora está analizando tu espacio... 🌿</em>`;
+      noraChatContainer.appendChild(loadingBubble);
+      noraChatContainer.scrollTop = noraChatContainer.scrollHeight;
+
+      // Simulación de análisis agronómico tras 2 segundos
+      setTimeout(() => {
+        const indicator = document.getElementById('nora-analyzing-indicator');
+        if (indicator) indicator.remove();
+
+        const responseBubble = document.createElement('div');
+        responseBubble.className = 'nora-bubble';
+        responseBubble.innerHTML = `🌿 Analizé la imagen de tu espacio. De acuerdo a los protocolos técnicos de nuestro Ingeniero Agrónomo, detecto signos de estrés hídrico y falta de oxigenación en el sustrato. Te sugiero aplicar el <strong>Kit cuidado de plantas de interior</strong> que incluye el medidor análogo de humedad para controlar el riego de forma exacta.`;
+        noraChatContainer.appendChild(responseBubble);
+        noraChatContainer.scrollTop = noraChatContainer.scrollHeight;
+      }, 2000);
+    };
+    reader.readAsDataURL(file);
+    noraFileInput.value = '';
   });
 }
 
