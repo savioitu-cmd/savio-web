@@ -9,6 +9,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3E493D">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 
@@ -30,7 +34,7 @@
   <section id="inicio" class="hero-section">
     <div class="hero-overlay"></div>
     <div class="hero-content">
-      <span class="hero-tag">Ituzaingó · Buenos Aires</span>
+      <span class="hero-tag" id="hero-location">Ituzaingó · Corrientes · Argentina</span>
       <h1 class="hero-title">Tu jardín,<br><em>redescubierto.</em></h1>
       <p class="hero-subtitle">Kits botánicos de precisión, herramientas premium y la asesoría de Nora, tu asistente experta en jardinería orgánica.</p>
       <div class="hero-actions">
@@ -218,7 +222,7 @@
       <div class="footer-content">
         <div class="footer-brand">
           <h2>SAVIO<span>.</span></h2>
-          <p>Jardinería Botánica Premium · Ituzaingó, Buenos Aires</p>
+          <p>Jardinería Botánica Premium · Ituzaingó, Corrientes, Argentina</p>
         </div>
         <div class="footer-links">
           <a href="#inicio">Inicio</a>
@@ -227,7 +231,8 @@
         </div>
       </div>
       <div class="footer-bottom">
-        <p>© 2026 SAVIO. Todos los derechos reservados. · <a href="mailto:savioitu@gmail.com" style="color:var(--accent-arena);">savioitu@gmail.com</a></p>
+        <p>© 2026 SAVIO. Todos los derechos reservados. · <a href="mailto:savioitu@gmail.com" style="color:var(--arena);">savioitu@gmail.com</a></p>
+        <p style="margin-top:0.4rem;"><a href="dashboard.html" style="color:rgba(255,255,255,0.2);font-size:0.72rem;text-decoration:none;">Panel Admin</a></p>
       </div>
     </div>
   </footer>

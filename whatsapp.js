@@ -3,8 +3,11 @@ export const carrito = {
   extras: []
 };
 
+// Número leído del localStorage (configurable desde el Dashboard de Operador)
 export const WHATSAPP_CONFIG = {
-  telefono: '5493786519242'
+  get telefono() {
+    return localStorage.getItem('savio_whatsapp_number') || '5493786519242';
+  }
 };
 
 export function setKitPrincipal(kit) {

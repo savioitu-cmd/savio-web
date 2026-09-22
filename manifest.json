@@ -1,0 +1,37 @@
+{
+  "name": "SAVIO Ituzaingó",
+  "short_name": "SAVIO",
+  "description": "Kits de jardinería botánica premium y asesoría experta en Ituzaingó, Corrientes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1C1D1B",
+  "theme_color": "#3E493D",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233E493D'/><text y='.9em' font-size='80' x='10'>🌿</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%233E493D'/><text y='.9em' font-size='80' x='10'>🌿</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["shopping", "lifestyle"],
+  "lang": "es-AR",
+  "shortcuts": [
+    {
+      "name": "Diagnóstico Botánico",
+      "url": "/#quiz-section",
+      "description": "Hacé tu diagnóstico gratis"
+    },
+    {
+      "name": "Tienda",
+      "url": "/#tienda",
+      "description": "Ver kits y productos"
+    }
+  ]
+}
