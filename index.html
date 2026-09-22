@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SAVIO | Obras y Servicios Premium</title>
+  <title>SAVIO Ituzaingó | Jardinería Botánica Premium</title>
+  <meta name="description" content="Kits de jardinería orgánica, herramientas premium y asesoría botánica personalizada en Ituzaingó. Hacé tu diagnóstico gratis con Nora.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -11,188 +12,203 @@
 </head>
 <body>
 
-  <!-- Barra de Navegación Fija -->
-  <nav class="site-nav">
+  <!-- Nav -->
+  <nav class="site-nav" id="main-nav">
     <div class="nav-container">
-      <a href="#" class="nav-brand">SAVIO<span>.</span></a>
+      <a href="#inicio" class="nav-brand">SAVIO<span>.</span></a>
       <ul class="nav-links">
         <li><a href="#inicio">Inicio</a></li>
-        <li><a href="#nosotros">Nosotros</a></li>
-        <li><a href="#servicios">Servicios</a></li>
-        <li><a href="#obras">Obras realizadas</a></li>
+        <li><a href="#quiz-section">Diagnóstico</a></li>
+        <li><a href="#tienda">Tienda</a></li>
         <li><a href="#contacto">Contacto</a></li>
       </ul>
-      <a href="#contacto" class="btn-primary">SOLICITÁ UN PRESUPUESTO -&gt;</a>
+      <a href="#quiz-section" class="btn-primary nav-cta">DIAGNÓSTICO GRATIS →</a>
     </div>
   </nav>
 
-  <!-- Hero Section -->
+  <!-- Hero -->
   <section id="inicio" class="hero-section">
+    <div class="hero-overlay"></div>
     <div class="hero-content">
-      <h1 class="hero-title">CONSTRUIMOS<br>espacios que perduran.</h1>
-      <p class="hero-subtitle">Descubrí tu espacio verde ideal. Empezá nuestro diagnóstico rápido y recibí una recomendación experta de Kit o Asesoría.</p>
-      <button id="btn-iniciar-quiz" class="btn-primary" style="margin-top: 2rem;">INICIAR DIAGNÓSTICO -&gt;</button>
+      <span class="hero-tag">Ituzaingó · Buenos Aires</span>
+      <h1 class="hero-title">Tu jardín,<br><em>redescubierto.</em></h1>
+      <p class="hero-subtitle">Kits botánicos de precisión, herramientas premium y la asesoría de Nora, tu asistente experta en jardinería orgánica.</p>
+      <div class="hero-actions">
+        <button id="btn-iniciar-quiz" class="btn-golden">HACÉ TU DIAGNÓSTICO →</button>
+        <a href="#tienda" class="btn-outline">Ver Tienda</a>
+      </div>
     </div>
+    <div class="hero-scroll-hint">↓</div>
   </section>
 
   <!-- Quiz Section -->
-  <section id="quiz-section" class="quiz-section hidden">
-    <div class="container quiz-container">
-      <div id="quiz-progress" class="quiz-progress">Pregunta <span id="quiz-current-q">1</span> de 5</div>
-      
-      <div id="quiz-step-1" class="quiz-step">
-        <h2 class="quiz-question">1. ¿Qué tipo de espacio tenés disponible?</h2>
-        <div class="quiz-options">
-          <button class="quiz-btn" data-key="espacio" data-value="balcon">Balcón / Terraza (Macetas)</button>
-          <button class="quiz-btn" data-key="espacio" data-value="patio">Patio Pequeño</button>
-          <button class="quiz-btn" data-key="espacio" data-value="jardin">Jardín Amplio</button>
-          <button class="quiz-btn" data-key="espacio" data-value="interior">Interior (Sin luz directa)</button>
-        </div>
-      </div>
-
-      <div id="quiz-step-2" class="quiz-step hidden">
-        <h2 class="quiz-question">2. ¿Cuántas horas de sol directo recibe?</h2>
-        <div class="quiz-options">
-          <button class="quiz-btn" data-key="sol" data-value="mucho">Más de 5 horas</button>
-          <button class="quiz-btn" data-key="sol" data-value="medio">Entre 2 y 5 horas</button>
-          <button class="quiz-btn" data-key="sol" data-value="poco">Menos de 2 horas / Sombra</button>
-        </div>
-      </div>
-
-      <div id="quiz-step-3" class="quiz-step hidden">
-        <h2 class="quiz-question">3. ¿Cuál es el principal problema hoy?</h2>
-        <div class="quiz-options">
-          <button class="quiz-btn" data-key="problema" data-value="descuidado">Plantas tristes/descuidado</button>
-          <button class="quiz-btn" data-key="problema" data-value="plagas">Plagas o bichos</button>
-          <button class="quiz-btn" data-key="problema" data-value="crear">Quiero armar desde cero</button>
-          <button class="quiz-btn" data-key="problema" data-value="mantenimiento">Solo mantener</button>
-        </div>
-      </div>
-
-      <div id="quiz-step-4" class="quiz-step hidden">
-        <h2 class="quiz-question">4. ¿Cuánto tiempo podés dedicarle?</h2>
-        <div class="quiz-options">
-          <button class="quiz-btn" data-key="tiempo" data-value="alto">Todos los días (Me encanta)</button>
-          <button class="quiz-btn" data-key="tiempo" data-value="medio">Fines de semana</button>
-          <button class="quiz-btn" data-key="tiempo" data-value="bajo">Casi nada, busco algo fácil</button>
-        </div>
-      </div>
-
-      <div id="quiz-step-5" class="quiz-step hidden">
-        <h2 class="quiz-question">5. ¿Qué te gustaría lograr?</h2>
-        <div class="quiz-options">
-          <button class="quiz-btn" data-key="objetivo" data-value="huerta">Comer de mi huerta</button>
-          <button class="quiz-btn" data-key="objetivo" data-value="ornamental">Que se vea hermoso (Flores/Verde)</button>
-          <button class="quiz-btn" data-key="objetivo" data-value="asesoria">Tener una estructura planificada</button>
-        </div>
-      </div>
-
-      <div id="quiz-result" class="quiz-step hidden">
-        <h2 class="quiz-question" style="color:var(--accent-dorado);">¡Tenemos tu diagnóstico!</h2>
-        <p id="quiz-result-text" class="quiz-result-text"></p>
-        <div id="quiz-result-kit" class="quiz-result-kit"></div>
-        <button id="btn-whatsapp-quiz" class="btn-primary" style="margin-top: 2rem;">HABLEMOS POR WHATSAPP -></button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Servicios Section -->
-  <section id="servicios" class="services-section">
+  <section id="quiz-section" class="quiz-section">
     <div class="container">
-      <h2 class="section-title">Nuestros Servicios</h2>
-      <div class="services-grid">
-        <div class="service-card">
-          <h3>Construcción</h3>
-          <p>Ejecución integral de obras civiles y arquitectónicas.</p>
+      <div class="quiz-wrapper">
+        <div class="quiz-intro">
+          <span class="section-tag">Diagnóstico Botánico</span>
+          <h2 class="section-heading">¿Qué necesita<br>tu espacio verde?</h2>
+          <p>5 preguntas. 60 segundos. Recomendación experta y personalizada.</p>
         </div>
-        <div class="service-card">
-          <h3>Reparaciones</h3>
-          <p>Soluciones rápidas y efectivas para infraestructura.</p>
-        </div>
-        <div class="service-card">
-          <h3>Parquizado</h3>
-          <p>Diseño y mantenimiento de espacios verdes.</p>
-        </div>
-        <div class="service-card">
-          <h3>Soldadura</h3>
-          <p>Estructuras metálicas y trabajos de precisión.</p>
-        </div>
-        <div class="service-card">
-          <h3>Seguridad</h3>
-          <p>Instalación de sistemas y resguardo perimetral.</p>
-        </div>
-        <div class="service-card">
-          <h3>Limpieza</h3>
-          <p>Acondicionamiento post-obra y limpieza corporativa.</p>
-        </div>
-        <div class="service-card">
-          <h3>Mantenimiento</h3>
-          <p>Planes preventivos y correctivos para empresas.</p>
+        <div class="quiz-card" id="quiz-card">
+          <div id="quiz-progress-bar-wrap"><div id="quiz-progress-bar"></div></div>
+          <p class="quiz-step-label">Pregunta <span id="quiz-current-q">1</span> de 5</p>
+
+          <div id="quiz-step-1" class="quiz-step active">
+            <h3 class="quiz-question">¿Qué tipo de espacio tenés disponible?</h3>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-key="espacio" data-value="balcon">🪴 Balcón o Terraza</button>
+              <button class="quiz-btn" data-key="espacio" data-value="patio">🌿 Patio Pequeño</button>
+              <button class="quiz-btn" data-key="espacio" data-value="jardin">🌳 Jardín Amplio</button>
+              <button class="quiz-btn" data-key="espacio" data-value="interior">🏠 Interior (sin luz directa)</button>
+            </div>
+          </div>
+
+          <div id="quiz-step-2" class="quiz-step">
+            <h3 class="quiz-question">¿Cuántas horas de sol directo recibe?</h3>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-key="sol" data-value="mucho">☀️ Más de 5 horas</button>
+              <button class="quiz-btn" data-key="sol" data-value="medio">⛅ Entre 2 y 5 horas</button>
+              <button class="quiz-btn" data-key="sol" data-value="poco">🌤️ Menos de 2 horas / Sombra</button>
+            </div>
+          </div>
+
+          <div id="quiz-step-3" class="quiz-step">
+            <h3 class="quiz-question">¿Cuál es el principal problema hoy?</h3>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-key="problema" data-value="descuidado">😓 Plantas tristes o descuidadas</button>
+              <button class="quiz-btn" data-key="problema" data-value="plagas">🐛 Plagas o enfermedades</button>
+              <button class="quiz-btn" data-key="problema" data-value="crear">✨ Quiero crear desde cero</button>
+              <button class="quiz-btn" data-key="problema" data-value="mantenimiento">🔄 Solo mantener lo que tengo</button>
+            </div>
+          </div>
+
+          <div id="quiz-step-4" class="quiz-step">
+            <h3 class="quiz-question">¿Cuánto tiempo podés dedicarle por semana?</h3>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-key="tiempo" data-value="alto">💚 Todos los días (me encanta)</button>
+              <button class="quiz-btn" data-key="tiempo" data-value="medio">📅 Fines de semana</button>
+              <button class="quiz-btn" data-key="tiempo" data-value="bajo">⏱️ Casi nada, quiero algo fácil</button>
+            </div>
+          </div>
+
+          <div id="quiz-step-5" class="quiz-step">
+            <h3 class="quiz-question">¿Qué te gustaría lograr?</h3>
+            <div class="quiz-options">
+              <button class="quiz-btn" data-key="objetivo" data-value="huerta">🥬 Comer de mi propia huerta</button>
+              <button class="quiz-btn" data-key="objetivo" data-value="ornamental">🌸 Que se vea hermoso</button>
+              <button class="quiz-btn" data-key="objetivo" data-value="asesoria">📋 Tener un plan profesional</button>
+            </div>
+          </div>
+
+          <div id="quiz-result" class="quiz-step quiz-result-step">
+            <div class="result-icon">🌿</div>
+            <h3 class="quiz-question result-title">¡Tenemos tu recomendación!</h3>
+            <p id="quiz-result-text" class="quiz-result-text"></p>
+            <div id="quiz-result-kit" class="quiz-result-kit"></div>
+            <button id="btn-whatsapp-quiz" class="btn-golden" style="width:100%; margin-top:1.5rem;">
+              💬 HABLAR CON MACARENA →
+            </button>
+            <button id="btn-quiz-reset" class="btn-link-muted" style="margin-top:0.8rem;">Repetir diagnóstico</button>
+          </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Obras Realizadas Section -->
-  <section id="obras" class="works-section">
+  <!-- Tienda -->
+  <section id="tienda" class="store-section">
     <div class="container">
-      <h2 class="section-title light">Obras Destacadas</h2>
-      <div class="works-grid">
-        <div class="work-card">
-          <div class="work-image placeholder-img">Obra Industrial</div>
-          <div class="work-info">
-            <h4>Nave Industrial Sur</h4>
-            <p>Construcción desde cero, estructura metálica y pisos de alta resistencia.</p>
+      <div class="section-header">
+        <span class="section-tag light">Tienda SAVIO</span>
+        <h2 class="section-heading light">Kits & Productos<br>Seleccionados</h2>
+      </div>
+      <div class="store-grid">
+
+        <div class="product-card">
+          <div class="product-badge">⭐ Más Vendido</div>
+          <div class="product-icon-wrap">🌱</div>
+          <div class="product-info">
+            <h3>Kit Huerta Urbana SAVIO</h3>
+            <p>Todo para comenzar tu propia huerta en casa. Semillas de estación seleccionadas, sustrato orgánico enriquecido con compost y macetas de geotextil biodegradables.</p>
+            <ul class="product-includes">
+              <li>5 variedades de semillas de estación</li>
+              <li>Sustrato orgánico premium 15L</li>
+              <li>2 macetas geotextil 10L</li>
+              <li>Guía de siembra paso a paso</li>
+            </ul>
+            <div class="product-footer">
+              <span class="product-price">$24.500</span>
+              <button class="btn-product-wa" data-producto="Kit Huerta Urbana SAVIO ($24.500)">Consultar →</button>
+            </div>
           </div>
         </div>
-        <div class="work-card">
-          <div class="work-image placeholder-img">Mantenimiento Corporativo</div>
-          <div class="work-info">
-            <h4>Edificio Central</h4>
-            <p>Mantenimiento preventivo mensual y limpieza integral.</p>
+
+        <div class="product-card">
+          <div class="product-icon-wrap">🌿</div>
+          <div class="product-info">
+            <h3>Kit Nutrición de Suelo</h3>
+            <p>Fertilización orgánica de precisión para revitalizar cualquier sustrato empobrecido. Fórmula NPK equilibrada potenciada con humus de lombriz puro.</p>
+            <ul class="product-includes">
+              <li>Fertilizante NPK orgánico 500ml</li>
+              <li>Humus de lombriz puro 5L</li>
+              <li>Bioestimulante radicular 250ml</li>
+              <li>Dosificador graduado</li>
+            </ul>
+            <div class="product-footer">
+              <span class="product-price">$22.000</span>
+              <button class="btn-product-wa" data-producto="Kit Nutrición de Suelo ($22.000)">Consultar →</button>
+            </div>
           </div>
         </div>
-        <div class="work-card">
-          <div class="work-image placeholder-img">Parquizado Residencial</div>
-          <div class="work-info">
-            <h4>Complejo Las Lomas</h4>
-            <p>Diseño paisajístico y sistema de riego automatizado.</p>
+
+        <div class="product-card">
+          <div class="product-icon-wrap">✂️</div>
+          <div class="product-info">
+            <h3>Herramientas de Mano Premium</h3>
+            <p>Set ergonómico de precisión para jardinería profesional. Acero inoxidable de grado hortícola con mangos antideslizantes de goma natural.</p>
+            <ul class="product-includes">
+              <li>Tijera de poda bypass SK5</li>
+              <li>Pala de trasplante milimetrada</li>
+              <li>Pasta cicatrizante con propóleo</li>
+              <li>Guantes impermeables reforzados</li>
+            </ul>
+            <div class="product-footer">
+              <span class="product-price">$26.000</span>
+              <button class="btn-product-wa" data-producto="Herramientas de Mano Premium ($26.000)">Consultar →</button>
+            </div>
           </div>
         </div>
+
+        <div class="product-card">
+          <div class="product-icon-wrap">🌻</div>
+          <div class="product-info">
+            <h3>Semillas Seleccionadas de Estación</h3>
+            <p>Colección curada de semillas de alta germinación, adaptadas al clima bonaerense. Variedades ornamentales, aromáticas y de hoja comestible.</p>
+            <ul class="product-includes">
+              <li>10 sobres varietales de estación</li>
+              <li>Aromáticas: Albahaca, Orégano, Menta</li>
+              <li>Flores: Caléndula, Lavanda</li>
+              <li>Calendario de siembra incluido</li>
+            </ul>
+            <div class="product-footer">
+              <span class="product-price">$9.800</span>
+              <button class="btn-product-wa" data-producto="Semillas Seleccionadas de Estación ($9.800)">Consultar →</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
 
-  <!-- Sobre Nosotros Section -->
-  <section id="nosotros" class="about-section">
-    <div class="container about-grid">
-      <div class="about-text">
-        <h2 class="section-title">Sobre SAVIO</h2>
-        <p>Somos una empresa dedicada a la excelencia en servicios generales y obras. Con años de experiencia en el mercado, garantizamos resultados que superan las expectativas de nuestros clientes.</p>
-      </div>
-      <div class="about-values">
-        <div class="value-item">
-          <h4>Compromiso</h4>
-          <p>Cumplimos nuestros plazos y garantizamos la máxima calidad en cada obra.</p>
-        </div>
-        <div class="value-item">
-          <h4>Excelencia</h4>
-          <p>Utilizamos materiales de primera línea y contamos con personal altamente capacitado.</p>
-        </div>
-        <div class="value-item">
-          <h4>Innovación</h4>
-          <p>Aplicamos técnicas modernas para entregar soluciones ágiles y eficientes.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Contacto Section -->
+  <!-- Contacto -->
   <section id="contacto" class="contact-section">
     <div class="container contact-content">
-      <h2 class="section-title light">TU PROYECTO,<br>NUESTRO COMPROMISO</h2>
-      <p>Comunicate con nosotros para recibir asesoramiento personalizado y presupuestos a medida.</p>
-      <a href="mailto:contacto@savio.com" class="btn-primary">ENVIAR UN MENSAJE</a>
+      <span class="section-tag">Contacto Directo</span>
+      <h2 class="section-heading light">¿Necesitás asesoría<br>personalizada?</h2>
+      <p>Hablá directamente con Macarena, nuestra especialista botánica en Ituzaingó.</p>
+      <a href="https://wa.me/5493786519242?text=Hola%20Macarena%2C%20quiero%20consultar%20sobre%20jardinería%20SAVIO" target="_blank" class="btn-golden" style="margin-top:2rem;">💬 ESCRIBIR A MACARENA</a>
     </div>
   </section>
 
@@ -202,24 +218,25 @@
       <div class="footer-content">
         <div class="footer-brand">
           <h2>SAVIO<span>.</span></h2>
-          <p>Obras y Servicios Generales</p>
+          <p>Jardinería Botánica Premium · Ituzaingó, Buenos Aires</p>
         </div>
         <div class="footer-links">
           <a href="#inicio">Inicio</a>
-          <a href="#servicios">Servicios</a>
-          <a href="#obras">Obras</a>
+          <a href="#quiz-section">Diagnóstico</a>
+          <a href="#tienda">Tienda</a>
         </div>
       </div>
       <div class="footer-bottom">
-        <p>&copy; 2026 SAVIO. Todos los derechos reservados.</p>
+        <p>© 2026 SAVIO. Todos los derechos reservados. · <a href="mailto:savioitu@gmail.com" style="color:var(--accent-arena);">savioitu@gmail.com</a></p>
       </div>
     </div>
   </footer>
 
-  <!-- Asistente Virtual NORA (FAB) -->
+  <!-- Nora FAB -->
   <div class="nora-fab-container">
-    <button id="nora-fab-btn" class="nora-fab">
-      <span class="nora-icon">👷‍♀️</span>
+    <button id="nora-fab-btn" class="nora-fab" title="Hablar con Nora">
+      <span class="nora-icon">🌿</span>
+      <span class="nora-fab-label">Nora</span>
     </button>
     <div id="nora-chat-window" class="nora-window hidden">
       <div class="nora-header">
@@ -227,16 +244,14 @@
           <div class="nora-avatar">N</div>
           <div>
             <strong>Nora</strong>
-            <span>Asistente de Operaciones</span>
+            <span>Asistente Botánica · SAVIO</span>
           </div>
         </div>
         <button id="nora-close-btn">&times;</button>
       </div>
-      <div id="nora-chat-container" class="nora-chat-body">
-        <!-- Mensajes generados por app.js -->
-      </div>
+      <div id="nora-chat-container" class="nora-chat-body"></div>
       <div class="nora-input-bar">
-        <button type="button" id="nora-media-btn" style="background:transparent; color:var(--text-primary); font-size:1.2rem; border:none; cursor:pointer; padding:0 0.5rem;">📷</button>
+        <button type="button" id="nora-media-btn">📷</button>
         <input type="file" id="nora-file-input" accept="image/*" class="hidden">
         <input type="text" id="nora-text-input" placeholder="Consultá a Nora...">
         <button id="nora-send-btn">➔</button>
