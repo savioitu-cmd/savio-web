@@ -3,13 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Savio | Naturaleza y Cuidado - Asistente de Jardinería</title>
+  <title>Savio | Naturaleza y Cuidado - Asistente & Tienda Botánica</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+
+  <!-- Navegación Fija Superior -->
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <div class="nav-brand">savio</div>
+      <div class="nav-links">
+        <a href="#diagnostico" class="nav-link">🌿 Diagnóstico</a>
+        <a href="#catalogo" class="nav-link">🛒 Insumos</a>
+        <a href="#portfolio" class="nav-link">🏡 Obras Realizadas</a>
+      </div>
+    </div>
+  </nav>
 
   <header class="site-header">
     <div class="header-inner">
@@ -21,8 +33,14 @@
     </div>
   </header>
 
+  <!-- Botón Flotante para Móviles (Nora FAB) -->
+  <button type="button" id="nora-fab-toggle" class="nora-fab" aria-label="Abrir asistente Nora">
+    <span>🌿 Consultar a Nora</span>
+  </button>
+
   <main class="main-layout">
-    <section class="assistant-column" aria-label="Asistente de Jardinería">
+    <!-- Columna Izquierda: Diagnóstico y Asistente -->
+    <section id="diagnostico" class="assistant-column" aria-label="Asistente de Jardinería">
       <div class="card quiz-card">
         <div class="quiz-header">
           <span class="badge">Diagnóstico Botánico</span>
@@ -34,21 +52,11 @@
         </div>
 
         <div id="quiz-container" class="quiz-body">
-          <!-- Renderizado dinámico de pasos del Quiz -->
           <div class="step-card" id="quiz-step-content">
             <span class="step-number" id="step-indicator">Paso 1 de 5</span>
             <h3 class="question-text" id="question-title">¿Dónde están ubicadas tus plantas?</h3>
             <div class="options-grid" id="options-container">
-              <button type="button" class="option-btn" data-value="interior">
-                <span class="option-icon">🪴</span>
-                <span class="option-label">Interior</span>
-                <span class="option-sub">Departamentos, salas, poca o media luz</span>
-              </button>
-              <button type="button" class="option-btn" data-value="exterior">
-                <span class="option-icon">🌿</span>
-                <span class="option-label">Exterior</span>
-                <span class="option-sub">Balcón, terraza, patio o parque abierto</span>
-              </button>
+              <!-- Botones generados dinámicamente -->
             </div>
           </div>
         </div>
@@ -59,26 +67,23 @@
       </div>
     </section>
 
-    <aside class="nora-column" aria-label="Agente Nora">
+    <!-- Columna Derecha / Modal Móvil: Agente Nora -->
+    <aside id="nora-widget" class="nora-column" aria-label="Agente Nora">
       <div class="card nora-card">
         <div class="nora-header">
           <div class="avatar-wrap">
-            <div class="nora-avatar">
-              <span>🌿</span>
-            </div>
+            <div class="nora-avatar"><span>🌿</span></div>
             <span class="online-indicator" title="En línea"></span>
           </div>
           <div class="nora-info">
             <h3 class="nora-name">Nora</h3>
             <span class="nora-role">Asistente Botánica Savio</span>
           </div>
+          <button type="button" id="nora-close-btn" class="nora-close-btn" aria-label="Cerrar chat">&times;</button>
         </div>
 
         <div id="nora-chat-container" class="nora-chat-container">
-          <div class="nora-bubble">
-            <p>¡Hola! Soy Nora. Respondé las preguntas de la izquierda para darte mi diagnóstico botánico y recomendarte el kit ideal.</p>
-          </div>
-          <!-- Inserción dinámica de mensajes, sugerencias y diálogo contextual -->
+          <!-- Saludo y respuestas rápidas generadas por inicializarNoraProactiva() -->
         </div>
 
         <div class="nora-input-bar">
@@ -95,6 +100,89 @@
       </div>
     </aside>
   </main>
+
+  <!-- Sección: Catálogo Completo de Insumos y Kits -->
+  <section id="catalogo" class="content-section">
+    <div class="section-container">
+      <div class="section-head text-center">
+        <span class="badge">Insumos & Tratamientos</span>
+        <h2 class="section-title">Catálogo Oficial de Kits Botánicos</h2>
+        <p class="section-desc">Formulaciones técnicas y herramientas seleccionadas bajo criterios de agronomía biológica.</p>
+      </div>
+
+      <div class="catalog-grid" id="catalog-kits-grid">
+        <!-- Tarjetas generadas dinámicamente desde KITS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Sección: Portfolio de Obras Realizadas (Estilo Revista Editorial) -->
+  <section id="portfolio" class="content-section section-editorial">
+    <div class="section-container">
+      <div class="section-head text-center">
+        <span class="badge">Paisajismo & Cuidado</span>
+        <h2 class="section-title">Obras y Transformaciones</h2>
+        <p class="section-desc">Espacios restaurados y diseñados bajo protocolos científicos de nutrición y botánica aplicada.</p>
+      </div>
+
+      <div class="editorial-grid">
+        <article class="editorial-card">
+          <div class="editorial-img-wrap">
+            <div class="editorial-placeholder-img img-balcon"></div>
+            <span class="editorial-category">Balcones Urbanos</span>
+          </div>
+          <div class="editorial-body">
+            <h3 class="editorial-title">Transformación Balcón Botánico</h3>
+            <p class="editorial-desc">Recuperación de macetas compactadas mediante sustrato aireado, bioestimulante foliar y ajuste lumínico para especies de semisombra.</p>
+            <div class="editorial-tags">
+              <span class="tag-pill">Kit cuidado interior</span>
+              <span class="tag-pill">Regadera de precisión</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="editorial-card">
+          <div class="editorial-img-wrap">
+            <div class="editorial-placeholder-img img-parque"></div>
+            <span class="editorial-category">Parques Residenciales</span>
+          </div>
+          <div class="editorial-body">
+            <h3 class="editorial-title">Revitalización y Nutrición de Parque</h3>
+            <p class="editorial-desc">Plan de choque de 3 semanas para césped degradado, saneamiento fitosanitario de copas y reactivación del microbioma del suelo.</p>
+            <div class="editorial-tags">
+              <span class="tag-pill">Kit recuperar jardín</span>
+              <span class="tag-pill">Kit poda SK5</span>
+            </div>
+          </div>
+        </article>
+
+        <article class="editorial-card">
+          <div class="editorial-img-wrap">
+            <div class="editorial-placeholder-img img-huerta"></div>
+            <span class="editorial-category">Terrazas Vivas</span>
+          </div>
+          <div class="editorial-body">
+            <h3 class="editorial-title">Huerta Agroecológica Vertical</h3>
+            <p class="editorial-desc">Instalación de huerta productiva de aromáticas culinarias y hortalizas de hoja con rotación orgánica y bio-defensa con jabón potásico.</p>
+            <div class="editorial-tags">
+              <span class="tag-pill">Kit huerta en casa</span>
+              <span class="tag-pill">Compost vivo</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="brand">
+        <h3 class="brand-title" style="font-size:1.8rem;">savio</h3>
+        <p class="brand-tagline">conocer para cuidar</p>
+      </div>
+      <p style="font-size:0.85rem; color:var(--text-muted); margin-top:1rem;">© 2026 Savio • Naturaleza y Cuidado. Todos los derechos reservados.</p>
+    </div>
+  </footer>
 
   <script type="module" src="app.js"></script>
 </body>

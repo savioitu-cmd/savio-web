@@ -325,7 +325,134 @@ if (noraMediaBtn && noraFileInput && noraChatContainer) {
   });
 }
 
-// Inicialización
+// Bienvenida proactiva con botones de respuesta rápida
+export function inicializarNoraProactiva() {
+  if (!noraChatContainer) return;
+  noraChatContainer.innerHTML = '';
+
+  const bienvenida = document.createElement('div');
+  bienvenida.className = 'nora-bubble';
+  bienvenida.innerHTML = `<p>¡Hola! Bienvenido a Savio 🌿. Soy Nora, tu asistente botánica. Estoy acá para ayudarte a cuidar y transformar tu espacio verde. ¿Cómo te gustaría empezar hoy?</p>`;
+  noraChatContainer.appendChild(bienvenida);
+
+  const quickWrap = document.createElement('div');
+  quickWrap.className = 'quick-replies-wrap';
+  quickWrap.id = 'nora-quick-replies';
+
+  const opciones = [
+    { texto: '✨ Hacer mi Diagnóstico Botánico', target: '#diagnostico', accion: null },
+    { texto: '🛒 Ver el Catálogo de Productos', target: '#catalogo', accion: null },
+    { 
+      texto: '🏡 Conocer sus Trabajos de Paisajismo', 
+      target: '#portfolio', 
+      accion: () => {
+        setTimeout(() => {
+          const respNora = document.createElement('div');
+          respNora.className = 'nora-bubble';
+          respNora.innerHTML = `🌿 ¡Excelente elección! Acá abajo podés ver cómo transformamos balcones y jardines con las normativas de nuestro Ingeniero Agrónomo.`;
+          noraChatContainer.appendChild(respNora);
+          noraChatContainer.scrollTop = noraChatContainer.scrollHeight;
+        }, 400);
+      } 
+    }
+  ];
+
+  opciones.forEach(opc => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'quick-reply-btn';
+    btn.textContent = opc.texto;
+    btn.addEventListener('click', () => {
+      // Remover botones de respuesta rápida
+      quickWrap.remove();
+
+      // Imprimir elección del usuario
+      const userBubble = document.createElement('div');
+      userBubble.className = 'bubble-user';
+      userBubble.textContent = opc.texto;
+      noraChatContainer.appendChild(userBubble);
+      noraChatContainer.scrollTop = noraChatContainer.scrollHeight;
+
+      // Desplazamiento suave
+      const section = document.querySelector(opc.target);
+      if (section) section.scrollIntoView({ behavior: 'smooth' });
+
+      // Si tiene acción contextual adicional
+      if (opc.accion) opc.accion();
+
+      // En mobile, cerrar modal para ver la sección seleccionada
+      const noraWidget = document.getElementById('nora-widget');
+      if (noraWidget && window.innerWidth < 768) {
+        noraWidget.classList.remove('mobile-open');
+      }
+    });
+    quickWrap.appendChild(btn);
+  });
+
+  noraChatContainer.appendChild(quickWrap);
+}
+
+// Renderizado del Catálogo de Kits
+function renderizarCatalogoKits() {
+  const grid = document.getElementById('catalog-kits-grid');
+  if (!grid) return;
+
+  grid.innerHTML = KITS.map(kit => `
+    <article class="catalog-card">
+      <div class="catalog-header">
+        <span class="badge">Tratamiento Especializado</span>
+        <h3 class="catalog-title">${kit.nombre}</h3>
+        <p class="catalog-price">$${kit.precio.toLocaleString('es-AR')}</p>
+      </div>
+      <ul class="catalog-items">
+        ${kit.productosIncluidos.map(p => `<li>✓ ${p}</li>`).join('')}
+      </ul>
+      <button type="button" class="btn-catalog-action" data-kit-id="${kit.id}">
+        Seleccionar Kit & Consultar
+      </button>
+    </article>
+  `).join('');
+
+  grid.querySelectorAll('.btn-catalog-action').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const kitId = btn.getAttribute('data-kit-id');
+      const kit = KITS.find(k => k.id === kitId);
+      if (kit) {
+        setKitPrincipal(kit);
+        const section = document.querySelector('#diagnostico');
+        if (section) section.scrollIntoView({ behavior: 'smooth' });
+        
+        const bubble = document.createElement('div');
+        bubble.className = 'nora-bubble';
+        bubble.innerHTML = `🌿 Seleccionaste el <strong>${kit.nombre}</strong> desde el catálogo. Completá tu nombre o consultame por complementos.`;
+        noraChatContainer.appendChild(bubble);
+        noraChatContainer.scrollTop = noraChatContainer.scrollHeight;
+      }
+    });
+  });
+}
+
+// Control Móvil de Nora (FAB y Modal)
+const noraFab = document.getElementById('nora-fab-toggle');
+const noraCloseBtn = document.getElementById('nora-close-btn');
+const noraWidget = document.getElementById('nora-widget');
+
+if (noraFab && noraWidget) {
+  noraFab.addEventListener('click', () => {
+    noraWidget.classList.add('mobile-open');
+  });
+}
+
+if (noraCloseBtn && noraWidget) {
+  noraCloseBtn.addEventListener('click', () => {
+    noraWidget.classList.remove('mobile-open');
+  });
+}
+
+// Inicialización de la aplicación
 document.addEventListener('DOMContentLoaded', () => {
   renderizarPaso();
+  renderizarCatalogoKits();
+  inicializarNoraProactiva();
 });
+

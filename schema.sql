@@ -93,3 +93,24 @@ SET valor_politica = EXCLUDED.valor_politica,
     descripcion = EXCLUDED.descripcion,
     actualizado_at = timezone('utc'::text, now());
 
+-- 8. Tabla Portfolio de Trabajos y Obras de Paisajismo
+CREATE TABLE IF NOT EXISTS portfolio_trabajos (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    titulo TEXT NOT NULL,
+    descripcion TEXT,
+    categoria TEXT NOT NULL CHECK (categoria IN ('Balcones', 'Parques', 'Terrazas', 'Patios')),
+    imagen_url TEXT,
+    productos_insumos TEXT[] DEFAULT '{}',
+    creado_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE INDEX IF NOT EXISTS idx_portfolio_categoria ON portfolio_trabajos(categoria);
+
+-- Inserción inicial de obras modelo de Savio
+INSERT INTO portfolio_trabajos (titulo, descripcion, categoria, imagen_url, productos_insumos) VALUES
+('Transformación Balcón Botánico Urbano', 'Restauración completa de macetas con control de humedad y selección de follaje para semisombra.', 'Balcones', 'assets/obra-balcon.jpg', ARRAY['Kit cuidado de plantas de interior', 'Regadera de precisión']),
+('Revitalización y Nutrición de Parque Residencial', 'Plan de choque para césped degradado, podas sanitarias y nutrición radicular profunda.', 'Parques', 'assets/obra-parque.jpg', ARRAY['Kit para recuperar un jardín descuidado', 'Kit poda', 'Sustrato universal']),
+('Huerta Orgánica Vertical en Terraza', 'Diseño e instalación de huerto de aromáticas y hortalizas con sustrato vivo y compost premium.', 'Terrazas', 'assets/obra-huerta.jpg', ARRAY['Kit para huerta en casa', 'Pulverizador a presión'])
+ON CONFLICT DO NOTHING;
+
+
