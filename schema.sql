@@ -113,4 +113,23 @@ INSERT INTO portfolio_trabajos (titulo, descripcion, categoria, imagen_url, prod
 ('Huerta Orgánica Vertical en Terraza', 'Diseño e instalación de huerto de aromáticas y hortalizas con sustrato vivo y compost premium.', 'Terrazas', 'assets/obra-huerta.jpg', ARRAY['Kit para huerta en casa', 'Pulverizador a presión'])
 ON CONFLICT DO NOTHING;
 
+-- 9. Tabla de Asientos Contables y Remitos con OCR
+CREATE TABLE IF NOT EXISTS asientos_contables_ocr (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    proveedor_razon_social TEXT NOT NULL,
+    cuit TEXT,
+    fecha_emision DATE NOT NULL DEFAULT CURRENT_DATE,
+    nro_comprobante TEXT,
+    monto_neto NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (monto_neto >= 0),
+    iva NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (iva >= 0),
+    monto_total NUMERIC(12, 2) NOT NULL DEFAULT 0 CHECK (monto_total >= 0),
+    tipo_comprobante TEXT NOT NULL CHECK (tipo_comprobante IN ('Factura A', 'Factura B', 'Remito', 'Ticket')),
+    estado_auditoria TEXT DEFAULT 'pendiente',
+    creado_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
+);
+
+CREATE INDEX IF NOT EXISTS idx_asientos_fecha ON asientos_contables_ocr(fecha_emision);
+CREATE INDEX IF NOT EXISTS idx_asientos_cuit ON asientos_contables_ocr(cuit);
+
+
 

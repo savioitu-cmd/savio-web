@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savio | Panel Contable & OCR Fiscal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .admin-contable-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1.5rem 1.5rem 4rem;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+    }
+
+    .toolbar-card {
+      padding: 1.8rem 2.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.2rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.85rem;
+    }
+
+    .btn-ocr-scan {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--text-primary);
+      color: var(--bg-crema);
+      border: none;
+      padding: 0.85rem 1.4rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .btn-ocr-scan:hover {
+      background: var(--accent-terra);
+      transform: translateY(-1px);
+    }
+
+    .btn-export-csv {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: var(--bg-card-subtle);
+      color: var(--text-primary);
+      border: 1.5px solid var(--border-color);
+      padding: 0.85rem 1.3rem;
+      border-radius: var(--radius-md);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .btn-export-csv:hover {
+      border-color: var(--text-primary);
+      background: var(--accent-sage-light);
+    }
+
+    .status-ocr-banner {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+      padding: 1rem 1.5rem;
+      background: var(--accent-sage-light);
+      border: 1px solid var(--accent-sage);
+      border-radius: var(--radius-md);
+      color: var(--text-primary);
+      font-size: 0.92rem;
+      font-weight: 500;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .spinner-nora {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(30, 53, 37, 0.2);
+      border-top-color: var(--text-primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Tabla de Asientos */
+    .table-container {
+      overflow-x: auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .table-contable {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    .table-contable th {
+      background: var(--bg-card-subtle);
+      padding: 1.1rem 1.2rem;
+      font-family: var(--font-serif);
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--border-color);
+      white-space: nowrap;
+    }
+
+    .table-contable td {
+      padding: 1.1rem 1.2rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-primary);
+      vertical-align: middle;
+    }
+
+    .table-contable tr:last-child td {
+      border-bottom: none;
+    }
+
+    .table-contable tr:hover {
+      background: #FAFAF7;
+    }
+
+    .badge-tipo {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-color);
+    }
+
+    .badge-auditoria {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--online-green);
+    }
+
+    .amount-cell {
+      font-family: monospace;
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="header-inner">
+      <div class="brand">
+        <h1 class="brand-title">savio</h1>
+        <span class="brand-divider"></span>
+        <p class="brand-tagline">administración contable & ocr fiscal • nora</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="admin-contable-container">
+    <!-- Barra Superior de Acciones y Escaneo -->
+    <div class="toolbar-card">
+      <div>
+        <span class="badge">Auditoría Diaria</span>
+        <h2 class="section-title" style="font-size:1.5rem; margin-bottom:0.2rem;">Libro de Gastos & Facturación</h2>
+        <p class="section-desc" style="margin-bottom:0;">Digitalizá facturas físicas y remitos de viveros y proveedores en segundos.</p>
+      </div>
+
+      <div class="toolbar-actions">
+        <input type="file" id="comprobante-file-input" accept="image/*" capture="environment" class="hidden">
+        <button type="button" id="btn-capturar-comprobante" class="btn-ocr-scan">
+          <span>📷 Capturar Comprobante / Remito</span>
+        </button>
+        <button type="button" id="btn-exportar-csv" class="btn-export-csv">
+          <span>📥 Exportar Cierre Mensual para Contador (CSV)</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Indicador de Procesamiento OCR Dinámico -->
+    <div id="ocr-status-container" class="hidden">
+      <div class="status-ocr-banner">
+        <div class="spinner-nora"></div>
+        <span>Nora está leyendo el documento y extrayendo campos fiscales... 📊</span>
+      </div>
+    </div>
+
+    <!-- Grilla de Asientos Contables -->
+    <div class="table-container">
+      <table class="table-contable" id="tabla-asientos">
+        <thead>
+          <tr>
+            <th>Proveedor / Razón Social</th>
+            <th>CUIT</th>
+            <th>Tipo</th>
+            <th>Nro Comprobante</th>
+            <th>Fecha</th>
+            <th>Neto</th>
+            <th>IVA</th>
+            <th>Total</th>
+            <th>Estado</th>
+          </tr>
+        </thead>
+        <tbody id="tbody-asientos">
+          <tr>
+            <td><strong>Vivero Central Norte</strong></td>
+            <td>30-68945231-8</td>
+            <td><span class="badge-tipo">Factura A</span></td>
+            <td>0003-00012984</td>
+            <td>2026-09-18</td>
+            <td class="amount-cell">$42.000,00</td>
+            <td class="amount-cell">$8.820,00</td>
+            <td class="amount-cell"><strong>$50.820,00</strong></td>
+            <td><span class="badge-auditoria">● Auditado</span></td>
+          </tr>
+          <tr>
+            <td><strong>BioInsumos Orgánicos S.R.L.</strong></td>
+            <td>33-71249850-9</td>
+            <td><span class="badge-tipo">Remito</span></td>
+            <td>R-0001-00000841</td>
+            <td>2026-09-19</td>
+            <td class="amount-cell">$29.500,00</td>
+            <td class="amount-cell">$0,00</td>
+            <td class="amount-cell"><strong>$29.500,00</strong></td>
+            <td><span class="badge-auditoria">● Auditado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script type="module" src="admin-contable.js"></script>
+</body>
+</html>
