@@ -130,13 +130,15 @@ export async function cargarAsientosDesdeSupabase() {
       .select('*')
       .order('creado_at', { ascending: false });
 
+    // Siempre limpiamos la tabla (remueve los datos de ejemplo)
+    tbodyAsientos.innerHTML = '';
+
     if (error) {
       console.error('Error al cargar asientos:', error.message);
       return;
     }
 
     if (data && data.length > 0) {
-      tbodyAsientos.innerHTML = '';
       data.forEach(asiento => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -152,6 +154,8 @@ export async function cargarAsientosDesdeSupabase() {
         `;
         tbodyAsientos.appendChild(tr);
       });
+    } else {
+      tbodyAsientos.innerHTML = '<tr><td colspan="9" style="text-align:center;">No hay comprobantes escaneados.</td></tr>';
     }
   } catch (err) {
     console.error('Error de conexión con Supabase:', err);

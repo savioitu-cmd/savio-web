@@ -4,7 +4,7 @@ export const carrito = {
 };
 
 export const WHATSAPP_CONFIG = {
-  telefono: '5491100000000'
+  telefono: '5493786519242'
 };
 
 export function setKitPrincipal(kit) {

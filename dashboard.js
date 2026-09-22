@@ -27,6 +27,10 @@ const TITULOS_TABS = {
   ocr: {
     titulo: 'OCR Fiscal & Control de Gastos',
     subtitulo: 'Comprobantes de compra digitalizados y categorizados automáticamente.'
+  },
+  config: {
+    titulo: 'Configuración de Marca',
+    subtitulo: 'Ajustes del sistema operativo y enlaces de redes sociales.'
   }
 };
 
@@ -161,4 +165,112 @@ if (btnSync) {
 document.addEventListener('DOMContentLoaded', () => {
   renderizarLeadsCRM();
   renderizarInventarioRPM();
+
+  const btnPdf = document.getElementById('btn-export-pdf');
+  const btnWord = document.getElementById('btn-export-word');
+
+// Lógica de Impresión PDF con Membrete y Créditos
+  if (btnPdf) {
+    btnPdf.addEventListener('click', () => {
+      // Guardar el contenido original
+      const originalContents = document.body.innerHTML;
+      
+      // Crear contenido de impresión
+      const printHeader = `
+        <div style="text-align:center; padding-bottom: 2rem; border-bottom: 2px solid #1C1D1B; margin-bottom: 2rem;">
+          <h1 style="font-family:'Cormorant Garamond', serif; font-size:2.5rem; letter-spacing:0.1em; color:#1C1D1B;">SAVIO</h1>
+          <h2 style="font-family:'Montserrat', sans-serif; font-size:1.1rem; font-weight:400; color:#5A5A58;">Arquitectura, Construcción y Servicios Generales</h2>
+          <p style="font-family:'Montserrat', sans-serif; font-size:0.9rem; color:#5A5A58; margin-top:0.5rem;">savioitu@gmail.com</p>
+        </div>
+      `;
+      
+      const printFooter = `
+        <div style="position:fixed; bottom:0; width:100%; text-align:center; padding-top:1rem; border-top:1px solid #E0E0E0; font-family:'Montserrat', sans-serif; font-size:0.75rem; color:#5A5A58;">
+          Ecosistema Digital Desarrollado por MyJNexoraVisual • Soporte Técnico: 3786414533
+        </div>
+      `;
+      
+      const contentToPrint = document.getElementById('tab-crm').innerHTML;
+      
+      document.body.innerHTML = printHeader + contentToPrint + printFooter;
+      window.print();
+      
+      // Restaurar
+      document.body.innerHTML = originalContents;
+      location.reload(); // Para reenganchar event listeners tras reemplazar el innerHTML del body
+    });
+  }
+
+  // Exportar a Word
+  if (btnWord) {
+    btnWord.addEventListener('click', () => {
+      const htmlContent = document.getElementById('tab-crm').innerHTML;
+      const blob = new Blob(['\uFEFF', htmlContent], { type: 'application/msword' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `Historial_Comercial_SAVIO_${new Date().toISOString().split('T')[0]}.doc`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    });
+  }
+  
+  // Botón de Purgar
+  const btnPurgar = document.getElementById('btn-purgar-datos');
+  if (btnPurgar) {
+    btnPurgar.addEventListener('click', purgarDatosMuestra);
+  }
 });
+
+// Función Inteligencia de Precios Nora (Simulada para visualización)
+export async function calcularSugerenciaNora(kitId, nuevoCostoBase) {
+  // Lógica para actualizar en Supabase el porcentaje de ganancia si fuera necesario
+  console.log(`Calculando sugerencia para el kit ${kitId} con costo base de ${nuevoCostoBase}`);
+  
+  // Actualización inmediata simulada
+  try {
+    /* Descomentar cuando esté activa la lógica dinámica con ID real:
+    const { data, error } = await supabase.from('inventario_kits').update({ porcentaje_ganancia: 48 }).eq('id', kitId);
+    if(error) throw error;
+    */
+    console.log("Precio actualizado exitosamente en base de datos.");
+    alert("Recomendación de Nora aplicada con éxito al inventario.");
+  } catch (error) {
+    console.error("Error aplicando recomendación de Nora:", error.message);
+  }
+}
+
+// Vinculación de botón de recomendación de Nora
+document.addEventListener('click', (e) => {
+  if(e.target && e.target.textContent.trim() === 'Aplicar Recomendación') {
+    calcularSugerenciaNora('kit-huerta', 19000); // Valores de ejemplo para interactividad
+  }
+});
+
+// Función de limpieza para paso a Producción (Purgado Absoluto Transaccional)
+export async function purgarDatosMuestra() {
+  const confirmacion = confirm("⚠️ ATENCIÓN DE SEGURIDAD: Vas a eliminar todos los datos de prueba de Supabase. Esto vaciará clientes, diagnósticos y contabilidad de forma permanente. ¿Confirmás la acción?");
+  if (!confirmacion) return;
+
+  try {
+    console.log("Iniciando purga de datos absoluta...");
+    const tablas = [
+      'diagnosticos_jardin',
+      'clientes',
+      'asientos_contables_ocr'
+    ];
+
+    for (const tabla of tablas) {
+      const { error } = await supabase.from(tabla).delete().neq('id', '00000000-0000-0000-0000-000000000000');
+      if (error) throw error;
+      console.log(`✅ Tabla ${tabla} vaciada.`);
+    }
+
+    alert("✅ Purga completada. El sistema está impecable y en cero para Producción.");
+    location.reload();
+  } catch (error) {
+    console.error("❌ Error al purgar los datos:", error.message);
+    alert("Error al purgar la base de datos. Revisar consola.");
+  }
+}

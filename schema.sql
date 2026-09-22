@@ -7,6 +7,10 @@ CREATE TABLE IF NOT EXISTS clientes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     nombre TEXT NOT NULL,
     whatsapp TEXT NOT NULL,
+    tipo_cliente TEXT CHECK (tipo_cliente IN ('Temporal', 'Fijo')) DEFAULT 'Temporal',
+    tipo_contratacion TEXT CHECK (tipo_contratacion IN ('Directa', 'Contrato', 'Licitación')) DEFAULT 'Directa',
+    forma_pago_preferida TEXT,
+    fecha_ultima_compra TIMESTAMPTZ,
     creado_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
@@ -28,7 +32,9 @@ CREATE TABLE IF NOT EXISTS inventario_kits (
     id TEXT PRIMARY KEY,
     nombre TEXT NOT NULL,
     stock INTEGER NOT NULL DEFAULT 0 CHECK (stock >= 0),
-    precio NUMERIC(10, 2) NOT NULL CHECK (precio >= 0),
+    costo_base NUMERIC(10, 2) NOT NULL DEFAULT 0 CHECK (costo_base >= 0),
+    porcentaje_ganancia NUMERIC(5, 2) NOT NULL DEFAULT 45,
+    precio NUMERIC(10, 2) GENERATED ALWAYS AS (costo_base * (1 + porcentaje_ganancia / 100)) STORED,
     actualizado_at TIMESTAMPTZ NOT NULL DEFAULT timezone('utc'::text, now())
 );
 
@@ -75,12 +81,12 @@ CREATE INDEX IF NOT EXISTS idx_nora_embedding_hnsw
 ON nora_conocimiento_tecnico USING hnsw (embedding vector_cosine_ops);
 
 -- Inserción inicial de inventario
-INSERT INTO inventario_kits (id, nombre, stock, precio) VALUES
-('kit-recuperar', 'Kit para recuperar un jardín descuidado', 25, 28500.00),
-('kit-mantenimiento', 'Kit mantenimiento mensual', 40, 22000.00),
-('kit-huerta', 'Kit para huerta en casa', 30, 24500.00),
-('kit-poda', 'Kit poda', 20, 26000.00),
-('kit-interior', 'Kit cuidado de plantas de interior', 50, 19500.00)
+INSERT INTO inventario_kits (id, nombre, stock, costo_base, porcentaje_ganancia) VALUES
+('kit-recuperar', 'Kit para recuperar un jardín descuidado', 25, 19655.17, 45),
+('kit-mantenimiento', 'Kit mantenimiento mensual', 40, 15172.41, 45),
+('kit-huerta', 'Kit para huerta en casa', 30, 16896.55, 45),
+('kit-poda', 'Kit poda', 20, 17931.03, 45),
+('kit-interior', 'Kit cuidado de plantas de interior', 50, 13448.27, 45)
 ON CONFLICT (id) DO NOTHING;
 
 -- Inserción inicial de políticas comerciales para Nora
