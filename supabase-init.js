@@ -1,7 +1,7 @@
 import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm';
 
-export const SUPABASE_URL = 'https://tu-proyecto.supabase.co';
-export const SUPABASE_ANON_KEY = 'tu-anon-key-publica';
+export const SUPABASE_URL = 'https://supabase.co';
+export const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InVidmdqeGptY3NjcW9vZWF5aGduIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTAwMzE3NTYsImV4cCI6MjEwNTYwNzc1Nn0.U9aH7cDli_Zh9wSlF0WAL4RstqL4TkgH8VRhj2TWPeI';
 
 export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
