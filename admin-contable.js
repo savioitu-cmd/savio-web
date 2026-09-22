@@ -119,3 +119,43 @@ if (btnCapturar && fileInput) {
 if (btnExportarCsv) {
   btnExportarCsv.addEventListener('click', exportarCierreMensualCSV);
 }
+
+// Cargar asientos desde Supabase al iniciar
+export async function cargarAsientosDesdeSupabase() {
+  if (!tbodyAsientos) return;
+
+  try {
+    const { data, error } = await supabase
+      .from('asientos_contables_ocr')
+      .select('*')
+      .order('creado_at', { ascending: false });
+
+    if (error) {
+      console.error('Error al cargar asientos:', error.message);
+      return;
+    }
+
+    if (data && data.length > 0) {
+      tbodyAsientos.innerHTML = '';
+      data.forEach(asiento => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${asiento.proveedor_razon_social}</strong></td>
+          <td>${asiento.cuit || '-'}</td>
+          <td><span class="badge-tipo">${asiento.tipo_comprobante}</span></td>
+          <td>${asiento.nro_comprobante || '-'}</td>
+          <td>${asiento.fecha_emision}</td>
+          <td class="amount-cell">$${asiento.monto_neto.toLocaleString('es-AR')},00</td>
+          <td class="amount-cell">$${asiento.iva.toLocaleString('es-AR')},00</td>
+          <td class="amount-cell"><strong>$${asiento.monto_total.toLocaleString('es-AR')},00</strong></td>
+          <td><span class="badge-auditoria">● ${asiento.estado_auditoria}</span></td>
+        `;
+        tbodyAsientos.appendChild(tr);
+      });
+    }
+  } catch (err) {
+    console.error('Error de conexión con Supabase:', err);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', cargarAsientosDesdeSupabase);
