@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAVIO | Panel Operativo & Dashboard Integral</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      background-color: #F7F5F0;
+      display: flex;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Sidebar Grafito Desacoplada */
+    .dash-sidebar {
+      width: 270px;
+      background: var(--bg-grafito);
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      border-right: 1px solid rgba(184, 165, 138, 0.2);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 10;
+    }
+
+    .sidebar-brand {
+      padding: 2rem 1.8rem 1.5rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .sidebar-logo {
+      font-family: var(--font-serif);
+      font-size: 1.8rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--white);
+      text-transform: uppercase;
+      text-decoration: none;
+      display: block;
+    }
+
+    .sidebar-logo span { color: var(--accent-dorado); }
+
+    .sidebar-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      color: var(--accent-arena);
+      text-transform: uppercase;
+      display: block;
+      margin-top: 0.3rem;
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 1.5rem 0;
+      flex: 1;
+      overflow-y: auto;
+    }
+
+    .menu-item {
+      margin-bottom: 0.35rem;
+      padding: 0 0.8rem;
+    }
+
+    .tab-btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      padding: 0.85rem 1.1rem;
+      background: transparent;
+      color: #B5B2AA;
+      border: none;
+      border-radius: var(--radius-sm);
+      font-family: var(--font-sans);
+      font-size: 0.86rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      transition: var(--transition);
+      text-align: left;
+    }
+
+    .tab-btn:hover {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--white);
+    }
+
+    .tab-btn.active {
+      background: var(--accent-oliva);
+      color: var(--accent-arena);
+      border-left: 3px solid var(--accent-dorado);
+    }
+
+    .sidebar-footer {
+      padding: 1.5rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .btn-return-web {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-arena);
+      border: 1px solid rgba(184, 165, 138, 0.4);
+      padding: 0.7rem;
+      border-radius: var(--radius-sm);
+      transition: var(--transition);
+    }
+
+    .btn-return-web:hover {
+      background: var(--accent-dorado);
+      color: var(--bg-grafito);
+      border-color: var(--accent-dorado);
+    }
+
+    /* Área Principal de Contenido */
+    .dash-main {
+      flex: 1;
+      padding: 2.5rem 3rem 4rem;
+      overflow-y: auto;
+      max-width: 1400px;
+    }
+
+    .dash-header {
+      margin-bottom: 2.2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dash-title {
+      font-family: var(--font-serif);
+      font-size: 2.4rem;
+      color: var(--bg-grafito);
+      font-weight: 600;
+      line-height: 1.1;
+    }
+
+    .dash-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+    }
+
+    /* Pestañas de Vista */
+    .dash-tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .dash-tab-content.active {
+      display: block;
+    }
+
+    /* Métricas / KPI Cards */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .kpi-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    .kpi-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+
+    .kpi-value {
+      font-family: var(--font-serif);
+      font-size: 2.3rem;
+      font-weight: 700;
+      color: var(--bg-grafito);
+      line-height: 1;
+    }
+
+    .kpi-trend {
+      font-size: 0.78rem;
+      color: var(--online-green);
+      font-weight: 600;
+      margin-top: 0.6rem;
+    }
+
+    /* Tablas Elegantes */
+    .panel-card {
+      background: var(--white);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: var(--shadow-subtle);
+      margin-bottom: 2rem;
+    }
+
+    .panel-head {
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .table-responsive {
+      overflow-x: auto;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    .data-table th {
+      background: var(--bg-marfil);
+      padding: 1rem 1.2rem;
+      font-family: var(--font-serif);
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--bg-grafito);
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .data-table td {
+      padding: 1rem 1.2rem;
+      border-bottom: 1px solid #ECE7DE;
+      color: var(--bg-grafito);
+    }
+
+    .data-table tr:hover {
+      background: #FAF8F4;
+    }
+
+    @media (max-width: 900px) {
+      body { flex-direction: column; }
+      .dash-sidebar { width: 100%; height: auto; position: relative; }
+      .dash-main { padding: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar Grafito Aislada -->
+  <aside class="dash-sidebar">
+    <div class="sidebar-brand">
+      <a href="index.html" class="sidebar-logo">SAVIO<span>.</span></a>
+      <span class="sidebar-sub">Gestión Operativa • Nora</span>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="menu-item">
+        <button type="button" class="tab-btn active" data-tab="metricas">
+          <span>📊</span> Métricas Generales
+        </button>
+      </li>
+      <li class="menu-item">
+        <button type="button" class="tab-btn" data-tab="crm">
+          <span>👥</span> CRM Leads & Diagnósticos
+        </button>
+      </li>
+      <li class="menu-item">
+        <button type="button" class="tab-btn" data-tab="rpm">
+          <span>📦</span> RPM Inventario Kits
+        </button>
+      </li>
+      <li class="menu-item">
+        <button type="button" class="tab-btn" data-tab="rag">
+          <span>🧠</span> Memoria PDFs & RAG
+        </button>
+      </li>
+      <li class="menu-item">
+        <button type="button" class="tab-btn" data-tab="ocr">
+          <span>🧾</span> OCR Contable & Facturas
+        </button>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <a href="index.html" class="btn-return-web">← Volver al Sitio Web</a>
+    </div>
+  </aside>
+
+  <!-- Contenido Central Dinámico -->
+  <main class="dash-main">
+    <div class="dash-header">
+      <div>
+        <h1 class="dash-title" id="tab-title">Métricas de Operaciones</h1>
+        <p class="dash-subtitle" id="tab-subtitle">Indicadores clave de ventas, consultas y rendimiento de la empresa.</p>
+      </div>
+      <div id="dash-user-badge">
+        <span class="badge" style="background:var(--accent-oliva); color:var(--accent-arena); font-size:0.75rem;">Administrador Activo</span>
+      </div>
+    </div>
+
+    <!-- 1. Pestaña Métricas -->
+    <section id="tab-metricas" class="dash-tab-content active">
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-label">Facturación Mensual</div>
+          <div class="kpi-value" id="kpi-facturacion">$1.428.500</div>
+          <div class="kpi-trend">↑ +18.4% vs mes anterior</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Consultas Diagnósticos</div>
+          <div class="kpi-value" id="kpi-diagnosticos">84</div>
+          <div class="kpi-trend">↑ Asistente Nora activo</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Kits en Stock Total</div>
+          <div class="kpi-value" id="kpi-stock">165 un.</div>
+          <div class="kpi-trend">● 5 líneas activas</div>
+        </div>
+
+        <div class="kpi-card">
+          <div class="kpi-label">Comprobantes Auditados</div>
+          <div class="kpi-value" id="kpi-ocr">28</div>
+          <div class="kpi-trend">● OCR Fiscal al día</div>
+        </div>
+      </div>
+
+      <div class="panel-card">
+        <div class="panel-head">
+          <h3 style="font-family:var(--font-serif); font-size:1.4rem;">Últimos Diagnósticos del Asistente</h3>
+          <span class="badge">Leads Recientes</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Ambiente</th>
+                <th>Problema Detectado</th>
+                <th>Kit Recomendado</th>
+                <th>Fecha</th>
+              </tr>
+            </thead>
+            <tbody id="preview-leads-tbody">
+              <!-- Render dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Pestaña CRM Leads -->
+    <section id="tab-crm" class="dash-tab-content">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem;">Base de Clientes & Diagnósticos</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Historial de consultas recopiladas por el Quiz y por el Agente Nora.</p>
+          </div>
+          <button type="button" id="btn-sync-crm" class="btn-train" style="padding:0.6rem 1.2rem; font-size:0.82rem;">
+            🔄 Sincronizar Supabase
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>WhatsApp</th>
+                <th>Ambiente</th>
+                <th>Problema</th>
+                <th>Kit Sugerido</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+              </tr>
+            </thead>
+            <tbody id="crm-leads-tbody">
+              <!-- Render dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. Pestaña RPM Inventario -->
+    <section id="tab-rpm" class="dash-tab-content">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem;">Gestión de Stock de Kits</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Control de existencias y precios vinculados a la base de datos.</p>
+          </div>
+          <span class="badge" style="background:var(--accent-oliva); color:var(--accent-arena);">5 Kits Catalogados</span>
+        </div>
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Código ID</th>
+                <th>Nombre del Kit</th>
+                <th>Stock Disponible</th>
+                <th>Precio Unitario</th>
+                <th>Estado</th>
+                <th>Ajuste Rápido</th>
+              </tr>
+            </thead>
+            <tbody id="rpm-stock-tbody">
+              <!-- Render dinámico -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Pestaña Memoria PDFs & RAG -->
+    <section id="tab-rag" class="dash-tab-content">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem;">Entrenamiento de Nora con Manuales Técnicos</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Ingesta de documentos PDF para generación de embeddings y búsqueda vectorial.</p>
+          </div>
+          <a href="admin-entrenamiento.html" class="btn-train" style="text-decoration:none; padding:0.6rem 1.2rem; font-size:0.82rem;">
+            Abrir Panel Completo RAG ↗
+          </a>
+        </div>
+        <div style="background:var(--bg-marfil); border:2px dashed var(--border-color); border-radius:var(--radius-md); padding:2.5rem; text-align:center; cursor:pointer;" id="dash-dropzone">
+          <span style="font-size:2rem;">📄</span>
+          <h4 style="font-weight:600; margin:0.5rem 0;">Cargar nuevo Manual o Guía Agronómica</h4>
+          <p style="font-size:0.82rem; color:var(--text-muted);">Formatos soportados: PDF hasta 25MB para pgvector</p>
+          <input type="file" id="dash-pdf-input" class="hidden" accept=".pdf">
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. Pestaña OCR Contable -->
+    <section id="tab-ocr" class="dash-tab-content">
+      <div class="panel-card">
+        <div class="panel-head">
+          <div>
+            <h3 style="font-family:var(--font-serif); font-size:1.5rem;">Auditoría de Comprobantes & Remitos</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">Extracción óptica automática con IA para libros contables.</p>
+          </div>
+          <a href="admin-contable.html" class="btn-train" style="text-decoration:none; padding:0.6rem 1.2rem; font-size:0.82rem;">
+            Abrir Escáner Contable 📷
+          </a>
+        </div>
+        <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">
+          Accedé al módulo de captura móvil con cámara trasera para digitalizar facturas de viveros y proveedores en tiempo real.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>

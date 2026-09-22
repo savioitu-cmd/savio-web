@@ -332,7 +332,7 @@ export function inicializarNoraProactiva() {
 
   const bienvenida = document.createElement('div');
   bienvenida.className = 'nora-bubble';
-  bienvenida.innerHTML = `<p>¡Hola! Bienvenido a Savio 🌿. Soy Nora, tu asistente botánica. Estoy acá para ayudarte a cuidar y transformar tu espacio verde. ¿Cómo te gustaría empezar hoy?</p>`;
+  bienvenida.innerHTML = `<p>¡Hola! Bienvenido a SAVIO 🌿. Soy Nora, tu asistente de operaciones y servicios. Estamos listos para asesorarte en obras, mantenimiento técnico y soluciones estructurales para tu hogar o empresa. ¿Cómo te gustaría comenzar hoy?</p>`;
   noraChatContainer.appendChild(bienvenida);
 
   const quickWrap = document.createElement('div');
@@ -340,16 +340,16 @@ export function inicializarNoraProactiva() {
   quickWrap.id = 'nora-quick-replies';
 
   const opciones = [
-    { texto: '✨ Hacer mi Diagnóstico Botánico', target: '#diagnostico', accion: null },
-    { texto: '🛒 Ver el Catálogo de Productos', target: '#catalogo', accion: null },
+    { texto: '✨ Solicitar Presupuesto Técnico', target: '#diagnostico', accion: null },
+    { texto: '🛒 Catálogo de Insumos', target: '#catalogo', accion: null },
     { 
-      texto: '🏡 Conocer sus Trabajos de Paisajismo', 
-      target: '#portfolio', 
+      texto: '🏡 Ver Obras Realizadas', 
+      target: '#obras', 
       accion: () => {
         setTimeout(() => {
           const respNora = document.createElement('div');
           respNora.className = 'nora-bubble';
-          respNora.innerHTML = `🌿 ¡Excelente elección! Acá abajo podés ver cómo transformamos balcones y jardines con las normativas de nuestro Ingeniero Agrónomo.`;
+          respNora.innerHTML = `🌿 Acá podés ver algunos de nuestros proyectos de paisajismo e intervenciones estructurales supervisadas por nuestros especialistas.`;
           noraChatContainer.appendChild(respNora);
           noraChatContainer.scrollTop = noraChatContainer.scrollHeight;
         }, 400);
