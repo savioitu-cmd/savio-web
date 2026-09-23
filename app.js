@@ -79,6 +79,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const t = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
     const opName = localStorage.getItem('savio_operator_name') || 'Macarena';
     const opPhone = localStorage.getItem('savio_whatsapp_number') || '5493786519242';
+    const customPrompt = localStorage.getItem('savio_nora_custom_prompt');
+
+    // 0. CENTRO DE ENTRENAMIENTO DE NORA (Directivas activas del dashboard)
+    if (customPrompt && (t.includes('novedad') || t.includes('directiva') || t.includes('entrenamiento') || t.includes('promocion') || t.includes('promo'))) {
+      return `🌿 <strong>Directiva Botánica Actualizada:</strong> ${customPrompt}<br><br>¿Te gustaría coordinar un pedido o consultar sobre algún kit específico?`;
+    }
 
     // 1. PILAR IDENTIDAD & PROPÓSITO
     if (
