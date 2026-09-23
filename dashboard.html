@@ -20,49 +20,74 @@
     *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: var(--font-sans); background: var(--grafito); color: var(--marfil); }
 
+    /* ---- GESTIÓN DE ROLES / PERMISOS ---- */
+    body.role-operador .superadmin-only {
+      display: none !important;
+    }
+    .role-badge {
+      font-size: 0.75rem;
+      padding: 0.3rem 0.8rem;
+      border-radius: 20px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .role-badge.superadmin {
+      background: rgba(168, 144, 98, 0.2);
+      color: var(--dorado);
+      border: 1px solid var(--dorado);
+    }
+    .role-badge.operador {
+      background: rgba(46, 204, 113, 0.2);
+      color: #2ecc71;
+      border: 1px solid #27ae60;
+    }
+
     /* ---- LOGIN ---- */
     #login-screen {
-      height: 100vh; display: flex; align-items: center; justify-content: center;
+      min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 1.5rem;
     }
-    .login-card { background: #242523; padding: 3rem; border-radius: var(--radius); border: 1px solid rgba(184,165,138,0.12); width: 100%; max-width: 400px; text-align: center; }
+    .login-card { background: #242523; padding: 2.5rem; border-radius: var(--radius); border: 1px solid rgba(184,165,138,0.15); width: 100%; max-width: 420px; text-align: center; }
     .login-card input { width: 100%; padding: 0.8rem; margin: 0.5rem 0 1rem; background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: #fff; border-radius: 4px; }
-    .btn-login { width: 100%; background: var(--dorado); border: none; padding: 1rem; color: #fff; font-weight: bold; cursor: pointer; border-radius: 4px; }
+    .btn-login { width: 100%; background: var(--dorado); border: none; padding: 1rem; color: #1C1D1B; font-weight: bold; cursor: pointer; border-radius: 4px; }
     #login-error { color: #e74c3c; margin-top: 1rem; display: none; font-size: 0.8rem; }
 
     /* ---- DASHBOARD ---- */
     #dashboard-screen { display: none; padding: 2rem; max-width: 1200px; margin: 0 auto; }
-    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; }
+    .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
     .header h1 { font-family: var(--font-serif); color: var(--dorado); }
     
-    .nav-tabs { display: flex; gap: 1rem; margin-bottom: 2rem; overflow-x: auto; }
-    .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: var(--marfil); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: 4px; transition: var(--transition); white-space: nowrap; }
-    .tab-btn.active, .tab-btn:hover { background: var(--oliva); border-color: var(--oliva); }
+    .nav-tabs { display: flex; gap: 0.8rem; margin-bottom: 1.5rem; overflow-x: auto; padding-bottom: 0.5rem; }
+    .tab-btn { background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: var(--marfil); padding: 0.6rem 1.2rem; cursor: pointer; border-radius: 4px; transition: var(--transition); white-space: nowrap; font-size: 0.85rem; }
+    .tab-btn.active, .tab-btn:hover { background: var(--oliva); border-color: var(--oliva); color: #fff; }
 
-    .tab-content { display: none; background: #242523; padding: 2rem; border-radius: var(--radius); border: 1px solid rgba(184,165,138,0.1); }
-    .tab-content.active { display: block; animation: fadeIn 0.3s; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .tab-content { display: none; background: #242523; padding: 1.8rem; border-radius: var(--radius); border: 1px solid rgba(184,165,138,0.1); }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
 
     /* Utils */
     .btn-export { background: #2c3e50; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.8rem; margin-bottom: 1rem; }
-    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
-    th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.05); }
-    th { color: var(--dorado); text-transform: uppercase; font-size: 0.75rem; }
+    table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.88rem; }
+    th, td { padding: 0.8rem; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.06); }
+    th { color: var(--dorado); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.5px; }
     
-    /* Nora OCR */
-    .dropzone { border: 2px dashed var(--dorado); border-radius: var(--radius); padding: 3rem; text-align: center; cursor: pointer; transition: var(--transition); background: rgba(168,144,98,0.05); }
-    .dropzone:hover { background: rgba(168,144,98,0.1); }
-    .ocr-result { margin-top: 1.5rem; padding: 1rem; background: rgba(39,174,96,0.1); border-left: 4px solid #27ae60; display: none; }
+    /* Nora OCR & Training */
+    .dropzone { border: 2px dashed var(--dorado); border-radius: var(--radius); padding: 2.5rem; text-align: center; cursor: pointer; transition: var(--transition); background: rgba(168,144,98,0.05); }
+    .dropzone:hover { background: rgba(168,144,98,0.1); border-color: var(--arena); }
+    .ocr-result { margin-top: 1.5rem; padding: 1.2rem; background: rgba(39,174,96,0.1); border-left: 4px solid #27ae60; display: none; border-radius: 4px; }
     .ocr-result p { margin-bottom: 0.5rem; font-size: 0.9rem; }
 
     /* Config Forms */
     .form-group { margin-bottom: 1rem; }
-    .form-group label { display: block; font-size: 0.8rem; margin-bottom: 0.4rem; color: var(--arena); }
-    .form-group input { width: 100%; max-width: 400px; background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: #fff; padding: 0.7rem; border-radius: 4px; }
-    .btn-save { background: var(--oliva); color: #fff; border: none; padding: 0.7rem 1.5rem; cursor: pointer; border-radius: 4px; margin-top: 0.5rem; }
+    .form-group label { display: block; font-size: 0.8rem; margin-bottom: 0.4rem; color: var(--arena); font-weight: 500; }
+    .form-group input, .form-group select { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: #fff; padding: 0.7rem; border-radius: 4px; font-family: var(--font-sans); }
+    .btn-save { background: var(--oliva); color: #fff; border: none; padding: 0.7rem 1.5rem; cursor: pointer; border-radius: 4px; margin-top: 0.5rem; transition: var(--transition); font-weight: 600; }
+    .btn-save:hover { filter: brightness(1.1); }
 
     /* Fast Register Card & Actions */
-    .fast-register-card { background: #242523; border: 1px solid rgba(184,165,138,0.25); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 2rem; }
-    .fast-register-card summary { font-family: var(--font-serif); font-size: 1.2rem; color: var(--dorado); cursor: pointer; font-weight: 600; outline: none; }
+    .fast-register-card { background: #242523; border: 1px solid rgba(184,165,138,0.25); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1.8rem; }
+    .fast-register-card summary { font-family: var(--font-serif); font-size: 1.25rem; color: var(--dorado); cursor: pointer; font-weight: 600; outline: none; }
     .sub-tabs { display: flex; gap: 0.5rem; margin: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; }
     .subtab-btn { background: rgba(255,255,255,0.06); color: var(--marfil); border: none; padding: 0.45rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-family: var(--font-sans); }
     .subtab-btn.active { background: var(--oliva); color: #fff; font-weight: 600; }
@@ -74,43 +99,59 @@
     .badge-venc { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
   </style>
 </head>
-<body>
+<body class="role-superadmin">
 
   <!-- LOGIN -->
   <div id="login-screen">
     <div class="login-card">
-      <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--font-serif); color: var(--dorado); margin-bottom: 1rem;">
+      <h1 style="display: flex; align-items: center; justify-content: center; gap: 10px; font-family: var(--font-serif); color: var(--dorado); margin-bottom: 0.5rem;">
         <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8A58A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 22C12 22 3 17 3 10C3 5.5 6.5 2 11 2C12.5 2 14 3 14 4.5C14 6 12.5 7 11 7C8.5 7 7.5 9 7.5 11M12 22C12 22 21 17 21 10C21 5.5 17.5 2 13 2"/><path d="M4 19.5C6 18 8 18 10 19.5C12 21 14 21 16 19.5C18 18 20 18 22 19.5"/></svg>
         <span style="color: #F3F0E8;">SAVIO ERP.</span>
       </h1>
-      <input type="text" id="login-user" placeholder="Usuario (admin)">
-      <input type="password" id="login-pass" placeholder="Clave (0000)">
-      <button class="btn-login" id="btn-login">ACCEDER AL SISTEMA</button>
-      <div id="login-error">Clave incorrecta.</div>
+      <p style="font-size:0.8rem; color:var(--arena); margin-bottom:1.5rem;">Gestión Botánica y Administrativa Ituzaingó</p>
+
+      <input type="text" id="login-user" placeholder="Usuario (admin / operador)" value="admin">
+      <input type="password" id="login-pass" placeholder="Clave (Superadmin: 0000 / Operador: 1234)" value="0000">
+      
+      <button class="btn-login" id="btn-login">ACCEDER AL PANEL</button>
+      
+      <div style="margin-top:1.2rem; display:flex; justify-content:center; gap:0.5rem; font-size:0.75rem;">
+        <button type="button" id="btn-quick-admin" style="background:transparent; border:1px solid rgba(184,165,138,0.3); color:var(--arena); padding:4px 8px; border-radius:4px; cursor:pointer;">Superadmin (0000)</button>
+        <button type="button" id="btn-quick-op" style="background:transparent; border:1px solid rgba(46,204,113,0.3); color:#2ecc71; padding:4px 8px; border-radius:4px; cursor:pointer;">Operador (1234)</button>
+      </div>
+
+      <div id="login-error">Credenciales incorrectas. Verifique usuario o clave.</div>
     </div>
   </div>
 
   <!-- DASHBOARD -->
   <div id="dashboard-screen">
     <div class="header">
-      <h1 style="display: flex; align-items: center; gap: 10px; font-family: var(--font-serif); color: var(--dorado);">
-        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8A58A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 22C12 22 3 17 3 10C3 5.5 6.5 2 11 2C12.5 2 14 3 14 4.5C14 6 12.5 7 11 7C8.5 7 7.5 9 7.5 11M12 22C12 22 21 17 21 10C21 5.5 17.5 2 13 2"/><path d="M4 19.5C6 18 8 18 10 19.5C12 21 14 21 16 19.5C18 18 20 18 22 19.5"/></svg>
-        <span style="color: #F3F0E8;">SAVIO ERP.</span>
-      </h1>
-      <button id="btn-logout" class="btn-export" style="background:#c0392b; margin:0;">Cerrar Sesión</button>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <h1 style="display: flex; align-items: center; gap: 10px; font-family: var(--font-serif); color: var(--dorado); margin:0;">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#B8A58A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="flex-shrink:0;"><path d="M12 22C12 22 3 17 3 10C3 5.5 6.5 2 11 2C12.5 2 14 3 14 4.5C14 6 12.5 7 11 7C8.5 7 7.5 9 7.5 11M12 22C12 22 21 17 21 10C21 5.5 17.5 2 13 2"/><path d="M4 19.5C6 18 8 18 10 19.5C12 21 14 21 16 19.5C18 18 20 18 22 19.5"/></svg>
+          <span style="color: #F3F0E8;">SAVIO ERP.</span>
+        </h1>
+        <span id="header-role-badge" class="role-badge superadmin">Superadmin</span>
+      </div>
+
+      <div style="display:flex; align-items:center; gap:0.8rem;">
+        <button id="btn-toggle-role" class="btn-export" style="background:#3E493D; margin:0;" title="Alternar perfil de permisos">Cambiar a Modo Operador</button>
+        <button id="btn-logout" class="btn-export" style="background:#c0392b; margin:0;">Cerrar Sesión</button>
+      </div>
     </div>
 
     <!-- SECCIÓN COLAPSABLE: ALTAS Y REGISTROS RÁPIDOS -->
     <details class="fast-register-card" open>
-      <summary>➕ Altas y Registros Rápidos</summary>
+      <summary>➕ Altas y Registros Rápidos (Clientes & Productos con Calculadora)</summary>
       
       <div class="sub-tabs">
         <button type="button" id="subtab-btn-cliente" class="subtab-btn active">👤 Registro de Cliente</button>
-        <button type="button" id="subtab-btn-producto" class="subtab-btn">📦 Registro de Producto</button>
+        <button type="button" id="subtab-btn-producto" class="subtab-btn">📦 Registro de Producto (Calculadora de Margen)</button>
       </div>
 
       <!-- FORM CLIENTE -->
-      <form id="form-cliente" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; align-items: end;">
+      <form id="form-cliente" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0.85rem; align-items: end;">
         <div class="form-group" style="margin:0;">
           <label>Nombre / Razón Social</label>
           <input type="text" id="cli-nombre" placeholder="Ej. Vivero del Río" required style="width:100%;">
@@ -139,11 +180,33 @@
           </select>
         </div>
         <div class="form-group" style="margin:0;">
-          <label>Saldo Inicial (ej: -$45.000 o $0)</label>
+          <label>Forma de Pago Habitual</label>
+          <select id="cli-pago" style="width:100%; padding:0.7rem; background:rgba(255,255,255,0.05); border:1px solid rgba(184,165,138,0.2); color:#fff; border-radius:4px;">
+            <optgroup label="Contado">
+              <option value="Efectivo">Efectivo / Mostrador</option>
+            </optgroup>
+            <optgroup label="Cheque">
+              <option value="Cheque al Día">Cheque al Día</option>
+              <option value="Cheque Diferido (30/60d)">Cheque Pago Diferido (30/60d)</option>
+            </optgroup>
+            <optgroup label="Bancarizadas">
+              <option value="Transferencia">Transferencia Bancaria Directa</option>
+              <option value="Tarjeta de Débito">Tarjeta de Débito</option>
+              <option value="Tarjeta de Crédito">Tarjeta de Crédito</option>
+            </optgroup>
+            <optgroup label="Billeteras Virtuales">
+              <option value="Mercado Pago (QR/Link)">Mercado Pago (QR / Link)</option>
+              <option value="MODO">MODO</option>
+              <option value="Cuenta DNI / BNA+">Cuenta DNI / BNA+</option>
+            </optgroup>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Saldo Inicial (ej: -$45.000)</label>
           <input type="text" id="cli-saldo" placeholder="-$45.000" value="$0" style="width:100%;">
         </div>
         <div class="form-group" style="margin:0;">
-          <label>Fecha Vencimiento de Pago</label>
+          <label>Vencimiento de Pago</label>
           <input type="date" id="cli-vencimiento" style="width:100%; padding:0.65rem; background:rgba(255,255,255,0.05); border:1px solid rgba(184,165,138,0.2); color:#fff; border-radius:4px;">
         </div>
         <div>
@@ -151,8 +214,8 @@
         </div>
       </form>
 
-      <!-- FORM PRODUCTO -->
-      <form id="form-producto" style="display:none; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; align-items: end;">
+      <!-- FORM PRODUCTO CON CALCULADORA DE PRECIOS -->
+      <form id="form-producto" style="display:none; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 0.85rem; align-items: end;">
         <div class="form-group" style="margin:0;">
           <label>Nombre del Kit / Insumo</label>
           <input type="text" id="prod-nombre" placeholder="Ej. Kit Huerta Urbana" required style="width:100%;">
@@ -166,12 +229,20 @@
           <input type="text" id="prod-desc" placeholder="Semillas y sustrato biochar" style="width:100%;">
         </div>
         <div class="form-group" style="margin:0;">
-          <label>Stock Inicial</label>
+          <label>Stock Inicial (u.)</label>
           <input type="number" id="prod-stock" placeholder="10" min="0" required style="width:100%;">
         </div>
         <div class="form-group" style="margin:0;">
-          <label>Precio de Lista</label>
-          <input type="text" id="prod-precio" placeholder="$24.500" required style="width:100%;">
+          <label>Valor de Costo ($)</label>
+          <input type="number" id="prod-costo" placeholder="15000" min="0" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Margen Ganancia (%)</label>
+          <input type="number" id="prod-margen" placeholder="45" value="45" min="0" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Precio de Lista (Auto)</label>
+          <input type="text" id="prod-precio" placeholder="$21.750" readonly style="width:100%; font-weight:bold; color:var(--dorado); background:rgba(255,255,255,0.08);">
         </div>
         <div>
           <button type="submit" class="btn-save" style="width:100%; margin:0; padding:0.75rem; background:var(--dorado); color:#1C1D1B; font-weight:600;">Guardar Producto</button>
@@ -179,18 +250,20 @@
       </form>
     </details>
 
+    <!-- NAVEGACIÓN POR PESTAÑAS -->
     <div class="nav-tabs">
       <button class="tab-btn active" data-tab="tab-crm">CRM Clientes</button>
       <button class="tab-btn" data-tab="tab-rpm">RPM Proveedores</button>
       <button class="tab-btn" data-tab="tab-stock">Depósito / Stock</button>
-      <button class="tab-btn" data-tab="tab-nora">Nora Contable (OCR)</button>
-      <button class="tab-btn" data-tab="tab-config">Configuración Turno</button>
+      <button class="tab-btn superadmin-only" data-tab="tab-nora">Nora Contable (OCR)</button>
+      <button class="tab-btn superadmin-only" data-tab="tab-ia">🧠 Centro de Entrenamiento Nora</button>
+      <button class="tab-btn" data-tab="tab-config">Configuración Turno & Permisos</button>
     </div>
 
-    <!-- CRM Clientes -->
+    <!-- 1. CRM Clientes -->
     <div id="tab-crm" class="tab-content active">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2>Base de Clientes</h2>
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:0.5rem;">
+        <h2>Base de Clientes & Cuentas Corrientes</h2>
         <div>
           <button class="btn-export" onclick="exportPDF('crm-table', 'Clientes_SAVIO')">PDF</button>
           <button class="btn-export" onclick="exportWord('crm-table', 'Clientes_SAVIO')">Word</button>
@@ -213,6 +286,7 @@
               <th>Teléfono</th>
               <th>Tipo</th>
               <th>Condición</th>
+              <th>Forma de Pago</th>
               <th>Deuda / Saldo</th>
               <th>Vencimiento</th>
               <th class="no-print">Acciones CRM</th>
@@ -224,7 +298,7 @@
       </div>
     </div>
 
-    <!-- RPM Proveedores -->
+    <!-- 2. RPM Proveedores -->
     <div id="tab-rpm" class="tab-content">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2>Proveedores (RPM)</h2>
@@ -241,10 +315,10 @@
       </div>
     </div>
 
-    <!-- Depósito / Stock -->
+    <!-- 3. Depósito / Stock -->
     <div id="tab-stock" class="tab-content">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h2>Depósito Ituzaingó</h2>
+        <h2>Depósito Ituzaingó & Inventario</h2>
         <div>
           <button class="btn-export" onclick="exportPDF('stock-table', 'Stock_SAVIO')">PDF</button>
           <button class="btn-export" onclick="exportWord('stock-table', 'Stock_SAVIO')">Word</button>
@@ -258,7 +332,8 @@
               <th>Producto</th>
               <th>Descripción</th>
               <th>Cantidad</th>
-              <th>Precio</th>
+              <th>Costo</th>
+              <th>Precio Venta</th>
               <th>Estado</th>
             </tr>
           </thead>
@@ -268,10 +343,13 @@
       </div>
     </div>
 
-    <!-- Nora Contable (OCR) -->
-    <div id="tab-nora" class="tab-content">
-      <h2>Nora Asistente Contable (Simulación OCR)</h2>
-      <p style="font-size:0.9rem; color:var(--arena); margin-bottom:1.5rem;">Arrastrá aquí una factura de compra para deducción automática.</p>
+    <!-- 4. Nora Contable (OCR) - SUPERADMIN ONLY -->
+    <div id="tab-nora" class="tab-content superadmin-only">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2>Nora Asistente Contable (Simulación OCR)</h2>
+        <span class="role-badge superadmin">Superadmin</span>
+      </div>
+      <p style="font-size:0.9rem; color:var(--arena); margin-bottom:1.5rem; text-align:justify;">Arrastrá aquí una factura de compra para deducción automática de IVA y márgenes sugeridos.</p>
       
       <div class="dropzone" id="ocr-dropzone">
         <input type="file" id="ocr-input" style="display:none;" accept="image/*,.pdf">
@@ -288,22 +366,91 @@
       </div>
     </div>
 
-    <!-- Configuración -->
+    <!-- 5. Centro de Entrenamiento de Nora - SUPERADMIN ONLY -->
+    <div id="tab-ia" class="tab-content superadmin-only">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+        <h2>🧠 Centro de Entrenamiento de Nora (IA Botánica)</h2>
+        <span class="role-badge superadmin">Superadmin</span>
+      </div>
+      <p style="font-size:0.9rem; color:var(--arena); margin-bottom:1.5rem; text-align:justify;">
+        Entrená a Nora con informes del agrónomo, fichas técnicas y directivas semánticas para enriquecer sus respuestas a clientes en toda la web.
+      </p>
+
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(320px, 1fr)); gap:1.5rem;">
+        <!-- Ingesta Documental -->
+        <div style="background:#1C1D1B; padding:1.5rem; border-radius:var(--radius); border:1px solid rgba(184,165,138,0.2);">
+          <h3 style="color:var(--dorado); font-size:1.1rem; margin-bottom:0.6rem;">📑 Ingesta Documental del Agrónomo</h3>
+          <p style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:1rem; text-align:justify;">
+            Subí archivos de campo (PDF, TXT, DOC o fotos de diagnósticos) para nutrir la memoria botánica local.
+          </p>
+          <div class="dropzone" id="ia-docs-dropzone" style="padding:2rem;">
+            <input type="file" id="ia-docs-input" style="display:none;" accept=".pdf,.doc,.docx,.txt,image/*" multiple>
+            <div style="font-size:2rem; margin-bottom:0.5rem;">📂</div>
+            <p style="margin:0; font-size:0.85rem;">Click o arrastrar documentos técnicos aquí</p>
+          </div>
+          <div id="ia-docs-list" style="margin-top:1rem; font-size:0.8rem; color:var(--marfil);"></div>
+        </div>
+
+        <!-- Instrucciones Semánticas -->
+        <div style="background:#1C1D1B; padding:1.5rem; border-radius:var(--radius); border:1px solid rgba(184,165,138,0.2);">
+          <h3 style="color:var(--dorado); font-size:1.1rem; margin-bottom:0.6rem;">✍️ Instrucciones Semánticas para Nora</h3>
+          <p style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:0.6rem; text-align:justify;">
+            Definí pautas conversacionales, nuevas plagas estacionales o promociones especiales que Nora deba incorporar de inmediato.
+          </p>
+          <textarea id="ia-prompt-text" rows="7" style="width:100%; background:rgba(255,255,255,0.05); border:1px solid rgba(184,165,138,0.2); color:#fff; padding:0.8rem; border-radius:4px; font-family:var(--font-sans); font-size:0.85rem; line-height:1.4; resize:vertical;" placeholder="Ejemplo: Si consultan por orugas en huerta, recomendar macerado de ajo y ceniza. En compras superiores a $40.000 incluir gratis muestra de bioestimulante..."></textarea>
+          <button id="btn-save-ia" class="btn-save" style="width:100%; margin-top:0.8rem; background:var(--dorado); color:#1C1D1B; font-weight:600;">Guardar Entrenamiento en Cerebro de Nora</button>
+        </div>
+      </div>
+
+      <div style="margin-top:1.5rem; background:#1C1D1B; padding:1.2rem; border-radius:var(--radius); border:1px solid rgba(184,165,138,0.15);">
+        <h3 style="color:var(--dorado); font-size:0.95rem; margin-bottom:0.4rem;">Estado del Cerebro de Nora:</h3>
+        <p id="ia-status-text" style="font-size:0.85rem; color:#27ae60; margin:0;">● Memoria activa: 5 Kits sincronizados · Reglas de suelo correntino indexadas · Formulario listo para expansión.</p>
+      </div>
+    </div>
+
+    <!-- 6. Configuración & Permisos -->
     <div id="tab-config" class="tab-content">
-      <h2>Configuración Dinámica de Turno</h2>
-      <div class="form-group">
-        <label>Operador de Turno</label>
-        <input type="text" id="cfg-operator" placeholder="Ej: Macarena">
+      <h2>Configuración de Turno y Gestión de Permisos</h2>
+      
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1.5rem; margin-top:1rem;">
+        <!-- Configuración de Turno -->
+        <div style="background:#1C1D1B; padding:1.5rem; border-radius:var(--radius); border:1px solid rgba(184,165,138,0.2);">
+          <h3 style="color:var(--dorado); font-size:1.1rem; margin-bottom:1rem;">🕒 Operador de Turno y Canales</h3>
+          <div class="form-group">
+            <label>Nombre del Operador de Turno</label>
+            <input type="text" id="cfg-operator" placeholder="Ej: Macarena">
+          </div>
+          <div class="form-group">
+            <label>WhatsApp Comercial (Sin +)</label>
+            <input type="text" id="cfg-wa" placeholder="5493786519242">
+          </div>
+          <div class="form-group">
+            <label>Instagram URL</label>
+            <input type="text" id="cfg-ig" placeholder="https://instagram.com/savio">
+          </div>
+          <button class="btn-save" id="btn-save-cfg" style="width:100%;">Guardar Parámetros de Turno</button>
+        </div>
+
+        <!-- Gestión de Permisos y Roles (Superadmin) -->
+        <div class="superadmin-only" style="background:#1C1D1B; padding:1.5rem; border-radius:var(--radius); border:1px solid rgba(184,165,138,0.2);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="color:var(--dorado); font-size:1.1rem; margin:0;">🔐 Control de Acceso y Roles</h3>
+            <span class="role-badge superadmin">Superadmin</span>
+          </div>
+          <p style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:1rem; text-align:justify;">
+            Los operadores solo visualizan CRM de Clientes, Inventario y Configuración de Turno. Los libros contables OCR y el Centro de IA están restringidos a Superadmin.
+          </p>
+          <div class="form-group">
+            <label>Clave de Superadmin</label>
+            <input type="password" id="cfg-pass-admin" value="0000">
+          </div>
+          <div class="form-group">
+            <label>Clave de Operador</label>
+            <input type="password" id="cfg-pass-op" value="1234">
+          </div>
+          <button class="btn-save" id="btn-save-roles" style="width:100%; background:var(--oliva);">Actualizar Claves de Seguridad</button>
+        </div>
       </div>
-      <div class="form-group">
-        <label>WhatsApp Comercial (Sin +)</label>
-        <input type="text" id="cfg-wa" placeholder="5493786519242">
-      </div>
-      <div class="form-group">
-        <label>Instagram URL</label>
-        <input type="text" id="cfg-ig" placeholder="https://instagram.com/savio">
-      </div>
-      <button class="btn-save" id="btn-save-cfg">Guardar Cambios Globales</button>
     </div>
 
   </div>
