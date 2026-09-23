@@ -272,19 +272,8 @@
     </div>
   </div>
 
-  <!-- Btn Top -->
-  <button id="btn-top" title="Volver arriba">↑</button>
-
   <script type="module" src="app.js"></script>
   <script>
-    // Btn Top Logic
-    const btnTop = document.getElementById('btn-top');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 300) btnTop.style.display = 'flex';
-      else btnTop.style.display = 'none';
-    });
-    btnTop.addEventListener('click', () => window.scrollTo({top: 0, behavior: 'smooth'}));
-
     // PWA Install Logic
     let deferredPrompt;
     const pwaBanner = document.getElementById('pwa-banner');
@@ -304,6 +293,24 @@
       const { outcome } = await deferredPrompt.userChoice;
       deferredPrompt = null;
     });
+  </script>
+
+  <!-- PIE DE PÁGINA CON FIRMA DE AUTORÍA -->
+  <footer style="background-color: #1C1D1B; color: #F3F0E8; text-align: center; padding: 30px 20px; font-family: sans-serif; font-size: 0.85rem; border-top: 2px solid #3E493D; margin-top: 50px;">
+      <p style="margin: 0; color: #F3F0E8;">© 2026 SAVIO — Ituzaingó, Corrientes, Argentina. Todos los derechos reservados.</p>
+      <p style="margin: 5px 0 0 0; color: #B8A58A; font-weight: bold; letter-spacing: 1px;">Desarrollado y Optimizado por MyJNexoraVisual</p>
+  </footer>
+
+  <!-- FLECHA FLOTANTE PARA VOLVER ARRIBA -->
+  <button id="btn-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="display: none; position: fixed; bottom: 20px; left: 20px; background-color: #B8A58A; color: #1C1D1B; border: none; width: 45px; height: 45px; border-radius: 50%; font-weight: bold; cursor: pointer; font-size: 1.2rem; z-index: 999; box-shadow: 0 4px 10px rgba(0,0,0,0.4); align-items: center; justify-content: center;">
+      ▲
+  </button>
+
+  <script>
+      window.addEventListener('scroll', () => {
+          const btn = document.getElementById('btn-top');
+          if (btn) btn.style.display = window.scrollY > 400 ? 'flex' : 'none';
+      });
   </script>
 </body>
 </html>
