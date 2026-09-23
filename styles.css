@@ -132,8 +132,15 @@ h1,h2,h3,h4 { font-family: var(--font-serif); font-weight: 400; line-height: 1.1
   backdrop-filter: blur(20px);
   z-index: 1000;
   padding: 1.1rem 0;
-  border-bottom: 1px solid var(--border-dark);
-  transition: var(--transition);
+  border-bottom: 1px solid rgba(184,165,138,0.1);
+  transition: top 0.3s ease;
+}
+
+body.has-pwa-banner {
+  padding-top: 36px;
+}
+body.has-pwa-banner .site-nav {
+  top: 36px;
 }
 .nav-container {
   max-width: 1400px;
@@ -802,7 +809,9 @@ h1,h2,h3,h4 { font-family: var(--font-serif); font-weight: 400; line-height: 1.1
   align-items: center;
   gap: 1rem;
   z-index: 2000;
-  position: relative;
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 36px;
 }
 .pwa-banner button {
   background: var(--dorado);

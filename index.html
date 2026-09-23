@@ -291,10 +291,12 @@
       e.preventDefault();
       deferredPrompt = e;
       pwaBanner.style.display = 'flex';
+      document.body.classList.add('has-pwa-banner');
     });
 
     btnInstall.addEventListener('click', async () => {
       pwaBanner.style.display = 'none';
+      document.body.classList.remove('has-pwa-banner');
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       deferredPrompt = null;
