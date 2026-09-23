@@ -59,6 +59,19 @@
     .form-group label { display: block; font-size: 0.8rem; margin-bottom: 0.4rem; color: var(--arena); }
     .form-group input { width: 100%; max-width: 400px; background: rgba(255,255,255,0.05); border: 1px solid rgba(184,165,138,0.2); color: #fff; padding: 0.7rem; border-radius: 4px; }
     .btn-save { background: var(--oliva); color: #fff; border: none; padding: 0.7rem 1.5rem; cursor: pointer; border-radius: 4px; margin-top: 0.5rem; }
+
+    /* Fast Register Card & Actions */
+    .fast-register-card { background: #242523; border: 1px solid rgba(184,165,138,0.25); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 2rem; }
+    .fast-register-card summary { font-family: var(--font-serif); font-size: 1.2rem; color: var(--dorado); cursor: pointer; font-weight: 600; outline: none; }
+    .sub-tabs { display: flex; gap: 0.5rem; margin: 1rem 0; border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 0.5rem; }
+    .subtab-btn { background: rgba(255,255,255,0.06); color: var(--marfil); border: none; padding: 0.45rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; font-family: var(--font-sans); }
+    .subtab-btn.active { background: var(--oliva); color: #fff; font-weight: 600; }
+    .btn-crm-action { padding: 0.35rem 0.6rem; border-radius: 4px; font-size: 0.75rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; font-weight: 500; margin-right: 5px; text-decoration: none; transition: var(--transition); }
+    .btn-wa-oferta { background: rgba(39, 174, 96, 0.2); color: #2ecc71; border: 1px solid rgba(46, 204, 113, 0.4); }
+    .btn-wa-oferta:hover { background: #27ae60; color: #fff; }
+    .btn-wa-vencimiento { background: rgba(230, 126, 34, 0.2); color: #e67e22; border: 1px solid rgba(230, 126, 34, 0.4); }
+    .btn-wa-vencimiento:hover { background: #d35400; color: #fff; }
+    .badge-venc { font-size: 0.75rem; padding: 2px 6px; border-radius: 4px; background: rgba(231, 76, 60, 0.15); color: #e74c3c; border: 1px solid rgba(231,76,60,0.3); }
   </style>
 </head>
 <body>
@@ -87,6 +100,85 @@
       <button id="btn-logout" class="btn-export" style="background:#c0392b; margin:0;">Cerrar Sesión</button>
     </div>
 
+    <!-- SECCIÓN COLAPSABLE: ALTAS Y REGISTROS RÁPIDOS -->
+    <details class="fast-register-card" open>
+      <summary>➕ Altas y Registros Rápidos</summary>
+      
+      <div class="sub-tabs">
+        <button type="button" id="subtab-btn-cliente" class="subtab-btn active">👤 Registro de Cliente</button>
+        <button type="button" id="subtab-btn-producto" class="subtab-btn">📦 Registro de Producto</button>
+      </div>
+
+      <!-- FORM CLIENTE -->
+      <form id="form-cliente" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; align-items: end;">
+        <div class="form-group" style="margin:0;">
+          <label>Nombre / Razón Social</label>
+          <input type="text" id="cli-nombre" placeholder="Ej. Vivero del Río" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Teléfono / WhatsApp</label>
+          <input type="text" id="cli-tel" placeholder="Ej. 5493786519242" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Tipo</label>
+          <select id="cli-tipo" style="width:100%; padding:0.7rem; background:rgba(255,255,255,0.05); border:1px solid rgba(184,165,138,0.2); color:#fff; border-radius:4px;">
+            <option value="Particular">Particular</option>
+            <option value="Empresa">Empresa</option>
+            <option value="Estatal">Estatal / Gobierno</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Condición Comercial</label>
+          <select id="cli-condicion" style="width:100%; padding:0.7rem; background:rgba(255,255,255,0.05); border:1px solid rgba(184,165,138,0.2); color:#fff; border-radius:4px;">
+            <option value="cta-corriente">Cuenta Corriente</option>
+            <option value="contado">Contado</option>
+            <option value="remito">Remito</option>
+            <option value="factura">Factura</option>
+            <option value="convenio">Convenio</option>
+            <option value="licitacion">Licitación</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Saldo Inicial (ej: -$45.000 o $0)</label>
+          <input type="text" id="cli-saldo" placeholder="-$45.000" value="$0" style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Fecha Vencimiento de Pago</label>
+          <input type="date" id="cli-vencimiento" style="width:100%; padding:0.65rem; background:rgba(255,255,255,0.05); border:1px solid rgba(184,165,138,0.2); color:#fff; border-radius:4px;">
+        </div>
+        <div>
+          <button type="submit" class="btn-save" style="width:100%; margin:0; padding:0.75rem; background:var(--oliva); font-weight:600;">Guardar Cliente</button>
+        </div>
+      </form>
+
+      <!-- FORM PRODUCTO -->
+      <form id="form-producto" style="display:none; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.9rem; align-items: end;">
+        <div class="form-group" style="margin:0;">
+          <label>Nombre del Kit / Insumo</label>
+          <input type="text" id="prod-nombre" placeholder="Ej. Kit Huerta Urbana" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>SKU / Código</label>
+          <input type="text" id="prod-sku" placeholder="Ej. KIT-003" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Descripción corta</label>
+          <input type="text" id="prod-desc" placeholder="Semillas y sustrato biochar" style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Stock Inicial</label>
+          <input type="number" id="prod-stock" placeholder="10" min="0" required style="width:100%;">
+        </div>
+        <div class="form-group" style="margin:0;">
+          <label>Precio de Lista</label>
+          <input type="text" id="prod-precio" placeholder="$24.500" required style="width:100%;">
+        </div>
+        <div>
+          <button type="submit" class="btn-save" style="width:100%; margin:0; padding:0.75rem; background:var(--dorado); color:#1C1D1B; font-weight:600;">Guardar Producto</button>
+        </div>
+      </form>
+    </details>
+
     <div class="nav-tabs">
       <button class="tab-btn active" data-tab="tab-crm">CRM Clientes</button>
       <button class="tab-btn" data-tab="tab-rpm">RPM Proveedores</button>
@@ -104,7 +196,7 @@
           <button class="btn-export" onclick="exportWord('crm-table', 'Clientes_SAVIO')">Word</button>
         </div>
       </div>
-      <select id="crm-filter" style="padding:0.5rem; background:#333; color:#fff; border:none; margin-bottom:1rem;">
+      <select id="crm-filter" style="padding:0.5rem; background:#333; color:#fff; border:none; margin-bottom:1rem; border-radius:4px;">
         <option value="todos">Todos los Filtros</option>
         <option value="cta-corriente">Cta. Corriente</option>
         <option value="contado">Contado</option>
@@ -115,11 +207,18 @@
       </select>
       <div id="crm-table">
         <table>
-          <thead><tr><th>Cliente</th><th>Tipo</th><th>Condición</th><th>Deuda / Saldo</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Cliente</th>
+              <th>Teléfono</th>
+              <th>Tipo</th>
+              <th>Condición</th>
+              <th>Deuda / Saldo</th>
+              <th>Vencimiento</th>
+              <th class="no-print">Acciones CRM</th>
+            </tr>
+          </thead>
           <tbody id="crm-tbody">
-            <tr data-type="cta-corriente"><td>Vivero Ituzaingó</td><td>Empresa</td><td>Cta. Corriente</td><td>-$45.000</td></tr>
-            <tr data-type="contado"><td>Juan Pérez</td><td>Final</td><td>Contado</td><td>$0</td></tr>
-            <tr data-type="licitacion"><td>Municipalidad Corrientes</td><td>Estatal</td><td>Licitación</td><td>-$120.000</td></tr>
           </tbody>
         </table>
       </div>
@@ -146,14 +245,24 @@
     <div id="tab-stock" class="tab-content">
       <div style="display:flex; justify-content:space-between; align-items:center;">
         <h2>Depósito Ituzaingó</h2>
-        <button class="btn-export" onclick="exportWord('stock-table', 'Stock_SAVIO')">Word</button>
+        <div>
+          <button class="btn-export" onclick="exportPDF('stock-table', 'Stock_SAVIO')">PDF</button>
+          <button class="btn-export" onclick="exportWord('stock-table', 'Stock_SAVIO')">Word</button>
+        </div>
       </div>
       <div id="stock-table">
         <table>
-          <thead><tr><th>SKU</th><th>Producto</th><th>Cantidad</th><th>Estado</th></tr></thead>
-          <tbody>
-            <tr><td>KIT-001</td><td>Kit Huerta Urbana</td><td>12</td><td style="color:#27ae60">Óptimo</td></tr>
-            <tr><td>SUB-020</td><td>Sustrato Biochar 20L</td><td>3</td><td style="color:#e67e22">Reabastecer</td></tr>
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Producto</th>
+              <th>Descripción</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody id="stock-tbody">
           </tbody>
         </table>
       </div>
