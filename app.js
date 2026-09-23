@@ -76,19 +76,81 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function localNoraLogic(text) {
-    const t = text.toLowerCase();
-    
-    // Agronomía Correntina & Litoral
-    if (t.includes('calor') || t.includes('verano') || t.includes('corrientes'))
-      return 'El clima de Ituzaingó exige riego temprano en verano y mulching para proteger las raíces del calor intenso. Nuestras semillas toleran bien la amplitud térmica del litoral ☀️🌿';
-    if (t.includes('humedad') || t.includes('hongo'))
-      return 'Con la humedad del río Paraná, es clave no encharcar. Te sugiero un fungicida preventivo orgánico o jabón potásico con neem 💧';
-    if (t.includes('precio') || t.includes('costo') || t.includes('vale'))
-      return 'Nuestros kits van de $19.500 a $28.500. Para un presupuesto exacto, escribile a Macarena por WhatsApp 🌿';
-    if (t.includes('huerta') || t.includes('semilla'))
-      return 'El Kit Huerta Urbana es ideal para la tierra de Corrientes: sustrato aireado, semillas de estación y geotextiles por $24.500 🥬';
-    
-    return '¡Qué buena consulta! Para darte la respuesta más precisa, hablemos por WhatsApp. El operador de turno te asesora al instante 🌿';
+    const t = text.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+    const opName = localStorage.getItem('savio_operator_name') || 'Macarena';
+    const opPhone = localStorage.getItem('savio_whatsapp_number') || '5493786519242';
+
+    // 1. PILAR IDENTIDAD & PROPÓSITO
+    if (
+      t.includes('quien sos') || t.includes('que haces') || t.includes('vos que') ||
+      t.includes('como te llamas') || t.includes('presentate') || t.includes('de que se trata') ||
+      t.includes('tu nombre') || t.includes('sos un bot') || t.includes('sos real') ||
+      t.includes('hola') || t.includes('buen dia') || t.includes('buenas tardes') || t.includes('buenas noches') || t.includes('buenas')
+    ) {
+      if (t.includes('quien sos') || t.includes('que haces') || t.includes('vos que') || t.includes('presentate') || t.includes('sos')) {
+        return 'Soy <strong>Nora</strong>, asistente botánica y paisajista de <strong>SAVIO</strong> en Ituzaingó, Corrientes 🌿. Mi propósito es ayudarte a diseñar tus espacios verdes, diagnosticar la sanidad de tus plantas y recomendarte las herramientas o insumos orgánicos precisos.<br><br>¿En qué proyecto o duda botánica te gustaría que trabajemos hoy?';
+      }
+      return `¡Hola! Qué gusto saludarte. Soy <strong>Nora</strong>, asistente botánica de SAVIO en Ituzaingó 🌿.<br>Puedo asesorarte sobre el cuidado de tus plantas bajo el clima del litoral, preparaciones de suelo orgánico o los kits de nuestro catálogo. ¿Qué tenés en mente hoy?`;
+    }
+
+    // 2. PILAR BOTÁNICA LITORAL (Suelo, Humedad, Calor, Plagas, Riego)
+    if (t.includes('tierra') || t.includes('suelo') || t.includes('sustrato') || t.includes('arena') || t.includes('arenoso') || t.includes('drenaje') || t.includes('compost') || t.includes('humus') || t.includes('biochar')) {
+      return 'En Ituzaingó y la ribera del Paraná solemos encontrar suelos muy arenosos que drenan rápido y retienen pocos nutrientes, o bien zonas arcillosas pesadas. La clave es enriquecer la estructura con <strong>sustrato aireado, compost maduro y humus puro de lombriz</strong> con partículas de biochar. Esto retiene humedad biológica sin compactar ni pudrir raíces 🌱.<br><br>¿Querés mejorar canteros a tierra directa o macetas?';
+    }
+
+    if (t.includes('humedad') || t.includes('hongo') || t.includes('parana') || t.includes('moho') || t.includes('roya') || t.includes('oidio') || t.includes('pudre') || t.includes('podredumbre') || t.includes('lluvia')) {
+      return 'Con la humedad propia de la cuenca del Paraná, los hongos foliares (como oídio y roya) encuentran condiciones propicias si las hojas quedan húmedas al anochecer. Para prevenirlo:<br>1. Regá siempre a primera hora de la mañana y directo al suelo.<br>2. Asegurá buena aireación y espacio entre plantas.<br>3. Aplicá de forma preventiva <strong>jabón potásico con neem</strong> o purín de cola de caballo 💧.<br><br>¿Notás manchas circulares o polvillo blanco en el follaje?';
+    }
+
+    if (t.includes('calor') || t.includes('verano') || t.includes('sol') || t.includes('temperatura') || t.includes('quemad') || t.includes('seco') || t.includes('seca') || t.includes('riego') || t.includes('regar')) {
+      return 'El sol del litoral correntino en verano alcanza radiaciones muy intensas. Dos reglas vitales:<br>• <strong>Riego estratégico:</strong> Siempre al amanecer o al caer el sol, evitando regar en la siesta para no cocinar las raíces ni generar efecto lupa en hojas.<br>• <strong>Mulching protector:</strong> Acolchado de hojarasca o corteza en la superficie para bajar la temperatura del suelo hasta 8°C y conservar la humedad ☀️🌿.<br><br>¿Tus plantas reciben sol pleno todo el día o media sombra?';
+    }
+
+    if (t.includes('plaga') || t.includes('bicho') || t.includes('cochinilla') || t.includes('pulgon') || t.includes('arañuela') || t.includes('mosca blanca') || t.includes('oruga') || t.includes('hoja comida') || t.includes('enferma') || t.includes('mancha')) {
+      return 'En SAVIO tratamos las plagas con enfoque ecológico sin químicos agresivos: la emulsión de <strong>jabón potásico con aceite de neem</strong> actúa por contacto disolviendo la cutícula cerosa de cochinillas y pulgones sin dañar polinizadores 🐝.<br><br>Si podés, subí una foto con el botón 📷 de abajo y te ayudo a identificar el síntoma exacto en el momento.';
+    }
+
+    // 3. PILAR TIENDA, KITS & ASESORÍA
+    if (t.includes('huerta') || t.includes('semilla') || t.includes('verdura') || t.includes('aromatica') || t.includes('tomate') || t.includes('lechuga')) {
+      return 'El <strong>Kit Huerta Urbana Ituzaingó ($24.500)</strong> está diseñado justo para nuestra zona: incluye 5 variedades de semillas de estación resistentes al calor, compost maduro premium (15L), humus de lombriz puro (5L) y pala de trasplante milimetrada 🥬.<br><br>¿Tenés espacio para canteros o preferís cajones/macetas geotextiles?';
+    }
+
+    if (t.includes('poda') || t.includes('podar') || t.includes('tijera') || t.includes('serrucho') || t.includes('herramienta')) {
+      return 'Para un corte limpio que cicatrice rápido contamos con el <strong>Kit Poda Profesional ($26.000)</strong>: incluye tijera bypass de acero templado SK5, serrucho curvo plegable y pasta cicatrizante con propóleo para blindar los cortes contra patógenos litoraleños ✂️.';
+    }
+
+    if (t.includes('interior') || t.includes('living') || t.includes('departamento') || t.includes('sombra')) {
+      return 'Para interiores recomendamos el <strong>Kit Oasis Interior ($19.500)</strong>: trae tónico abrillantador vegetal ecológico, fertilizante de liberación lenta, medidor análogo de humedad de sustrato y pulverizador de bruma fina 🌿. Ideal para monsteras, potus y calatheas.';
+    }
+
+    if (t.includes('asesor') || t.includes('agronomo') || t.includes('visita') || t.includes('tecnico') || t.includes('paisajis')) {
+      return 'Contamos con el servicio de <strong>Asesoría Técnica SAVIO ($15.000)</strong> brindada por un Ingeniero Agrónomo. Incluye diagnóstico fitosanitario en terreno (Ituzaingó), análisis de suelo, plan de fertilización a medida y seguimiento post-visita 📋.';
+    }
+
+    if (t.includes('kit') || t.includes('precio') || t.includes('costo') || t.includes('catalogo') || t.includes('producto') || t.includes('cuanto sale') || t.includes('cuanto cuesta')) {
+      return 'En SAVIO disponemos de 5 soluciones integrales preparadas para nuestro ecosistema:<br><br>' +
+        '• <strong>Kit Huerta Urbana Ituzaingó ($24.500):</strong> Semillas litoraleñas, compost (15L), humus (5L) y pala graduada.<br>' +
+        '• <strong>Kit Rescate Litoral ($28.500):</strong> Sustrato con biochar (20L), bioestimulante radicular, fertilizante NPK y tijera botánica.<br>' +
+        '• <strong>Kit Mantenimiento Correntino ($22.000):</strong> Fertilizante balanceado, bioestimulante anti-estrés, jabón potásico con neem y dosificador.<br>' +
+        '• <strong>Kit Poda Profesional ($26.000):</strong> Tijera bypass SK5, serrucho curvo y pasta cicatrizante con propóleo.<br>' +
+        '• <strong>Kit Oasis Interior ($19.500):</strong> Abrillantador vegetal, nutrición lenta, medidor de humedad y brumizador.<br><br>' +
+        '¿Cuál de estos kits responde mejor a lo que necesita tu espacio?';
+    }
+
+    // 4. CIERRE DIRECTO DE COMPRA O PEDIDO (WhatsApp intencional)
+    if (t.includes('comprar') || t.includes('compro') || t.includes('pedido') || t.includes('pedir') || t.includes('encargar') || t.includes('whatsapp') || t.includes('envio') || t.includes('despacho') || t.includes('pago')) {
+      const waMsg = encodeURIComponent(`Hola ${opName}, estoy en la tienda SAVIO y quiero coordinar un pedido.`);
+      return `¡Genial! Podés coordinar la entrega en Ituzaingó o envío directo con nuestro operador de turno (<strong>${opName}</strong>):<br><br>` +
+        `<a href="https://wa.me/${opPhone}?text=${waMsg}" target="_blank" style="display:inline-block;margin-top:6px;padding:8px 14px;background:#4E6844;color:#FFF;border-radius:6px;text-decoration:none;font-weight:600;">📲 Iniciar pedido con ${opName} por WhatsApp</a>`;
+    }
+
+    // 5. AFIRMACIONES Y AGRADECIMIENTOS
+    if (t === 'gracias' || t.includes('muchas gracias') || t === 'genial' || t === 'joya' || t === 'excelente' || t === 'dale' || t === 'buenisimo') {
+      return '¡Un gusto total! Estoy acá para lo que necesites en el jardín o la huerta. Si querés evaluar otro espacio o tenés dudas de cultivo, avisame y lo vemos juntas 🌿';
+    }
+
+    // 6. PILAR FLUIDEZ - FALLBACK INTELIGENTE
+    return 'Entiendo lo que mencionás. Para darte una orientación precisa para las condiciones de suelo y clima de Ituzaingó, contame: ¿se trata de un espacio exterior (patio, cantero, huerta) o plantas de interior? ¿O notás algún síntoma específico en las hojas? 🌱';
   }
 
   async function sendToNora(text) {
@@ -117,9 +179,9 @@ document.addEventListener('DOMContentLoaded', () => {
       // Delay de procesamiento visual 1.5s
       setTimeout(() => {
         hideTyping();
-        const reply = `He analizado la imagen 📷. Noto características típicas de los suelos del litoral. Te sugiero aplicar nuestro <strong>Kit Nutrición de Suelo</strong> para mejorar el drenaje y la carga orgánica. ¿Querés que te pase el link al WhatsApp de ventas? 🌿`;
+        const reply = `He analizado la imagen 📷. Noto características típicas de los suelos del litoral. Te sugiero aplicar nuestro <strong>Kit Rescate Litoral</strong> para mejorar el drenaje, la carga orgánica con biochar y reactivar las raíces. ¿Querés que analicemos algún detalle más o preferís ver la composición del kit? 🌿`;
         addMsg('nora', reply);
-        addQuickReplies(['Sí, pasar a WhatsApp', 'Ver otro kit']);
+        addQuickReplies(['Ver composición del kit', 'Consultar por plagas', 'Tengo dudas de riego']);
       }, 1500);
     };
     reader.readAsDataURL(file);
