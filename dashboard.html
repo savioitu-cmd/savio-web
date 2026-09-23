@@ -441,14 +441,31 @@
             Los operadores solo visualizan CRM de Clientes, Inventario y Configuración de Turno. Los libros contables OCR y el Centro de IA están restringidos a Superadmin.
           </p>
           <div class="form-group">
-            <label>Clave de Superadmin</label>
-            <input type="password" id="cfg-pass-admin" value="0000">
-          </div>
-          <div class="form-group">
             <label>Clave de Operador</label>
             <input type="password" id="cfg-pass-op" value="1234">
           </div>
-          <button class="btn-save" id="btn-save-roles" style="width:100%; background:var(--oliva);">Actualizar Claves de Seguridad</button>
+          <button class="btn-save" id="btn-save-roles" style="width:100%; background:var(--oliva);">Actualizar Clave de Operador</button>
+        </div>
+
+        <!-- Cambiar Contraseña del Sistema (Superadmin) -->
+        <div class="superadmin-only" style="background:#1C1D1B; padding:1.5rem; border-radius:var(--radius); border:1px solid rgba(184,165,138,0.2);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="color:var(--dorado); font-size:1.1rem; margin:0;">🔑 Cambiar Contraseña del Sistema</h3>
+            <span class="role-badge superadmin">Superadmin</span>
+          </div>
+          <p style="font-size:0.8rem; color:rgba(255,255,255,0.7); margin-bottom:1rem; text-align:justify;">
+            Modificá la clave maestra de acceso total. Se exigirá de forma estricta en el inicio de sesión del ERP para el rol Superadmin.
+          </p>
+          <div class="form-group">
+            <label>Contraseña Actual</label>
+            <input type="password" id="cfg-pass-actual" placeholder="Ingresá la clave actual (def: 0000)" required>
+          </div>
+          <div class="form-group">
+            <label>Nueva Contraseña del Superadmin</label>
+            <input type="password" id="cfg-pass-nueva" placeholder="Nueva contraseña maestra" required>
+          </div>
+          <button class="btn-save" id="btn-update-master-pass" style="width:100%; background:var(--dorado); color:#1C1D1B; font-weight:600;">Actualizar Clave Maestra</button>
+          <div id="pass-change-msg" style="margin-top:0.8rem; font-size:0.8rem; display:none;"></div>
         </div>
       </div>
     </div>

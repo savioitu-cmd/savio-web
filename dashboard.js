@@ -27,6 +27,15 @@ function applyRole(role) {
   }
 }
 
+function getSuperadminPass() {
+  return localStorage.getItem('savio_dashboard_pass') || localStorage.getItem('savio_pass_admin') || '0000';
+}
+
+function setSuperadminPass(newPass) {
+  localStorage.setItem('savio_dashboard_pass', newPass);
+  localStorage.setItem('savio_pass_admin', newPass);
+}
+
 function checkAuth() {
   if (localStorage.getItem('savio_erp_auth') === 'ok') {
     loginScreen.style.display = 'none';
@@ -43,7 +52,7 @@ function checkAuth() {
 btnLogin.addEventListener('click', () => {
   const u = document.getElementById('login-user').value.trim().toLowerCase();
   const p = document.getElementById('login-pass').value.trim();
-  const adminPass = localStorage.getItem('savio_pass_admin') || '0000';
+  const adminPass = getSuperadminPass();
   const opPass = localStorage.getItem('savio_pass_op') || '1234';
 
   if ((u === 'admin' || u === 'superadmin') && p === adminPass) {
@@ -62,7 +71,7 @@ btnLogin.addEventListener('click', () => {
 // Botones rápidos de login
 document.getElementById('btn-quick-admin')?.addEventListener('click', () => {
   document.getElementById('login-user').value = 'admin';
-  document.getElementById('login-pass').value = localStorage.getItem('savio_pass_admin') || '0000';
+  document.getElementById('login-pass').value = getSuperadminPass();
   btnLogin.click();
 });
 
@@ -445,9 +454,7 @@ function loadConfig() {
   if (cfgWa) cfgWa.value = localStorage.getItem('savio_whatsapp_number') || '5493786519242';
   if (cfgIg) cfgIg.value = localStorage.getItem('savio_instagram_url') || '';
 
-  const cfgPassAdmin = document.getElementById('cfg-pass-admin');
   const cfgPassOp = document.getElementById('cfg-pass-op');
-  if (cfgPassAdmin) cfgPassAdmin.value = localStorage.getItem('savio_pass_admin') || '0000';
   if (cfgPassOp) cfgPassOp.value = localStorage.getItem('savio_pass_op') || '1234';
 }
 
@@ -459,11 +466,51 @@ document.getElementById('btn-save-cfg')?.addEventListener('click', () => {
 });
 
 document.getElementById('btn-save-roles')?.addEventListener('click', () => {
-  const pAdmin = document.getElementById('cfg-pass-admin')?.value.trim();
   const pOp = document.getElementById('cfg-pass-op')?.value.trim();
-  if (pAdmin) localStorage.setItem('savio_pass_admin', pAdmin);
   if (pOp) localStorage.setItem('savio_pass_op', pOp);
-  alert('Claves de Superadmin y Operador actualizadas correctamente.');
+  alert('Clave de Operador actualizada correctamente.');
+});
+
+// Actualizar Clave Maestra de Superadmin
+document.getElementById('btn-update-master-pass')?.addEventListener('click', () => {
+  const actual = document.getElementById('cfg-pass-actual')?.value.trim();
+  const nueva = document.getElementById('cfg-pass-nueva')?.value.trim();
+  const msgBox = document.getElementById('pass-change-msg');
+
+  const currentStored = getSuperadminPass();
+
+  if (!actual || !nueva) {
+    alert('Por favor complete la contraseña actual y la nueva contraseña.');
+    return;
+  }
+
+  if (actual !== currentStored) {
+    if (msgBox) {
+      msgBox.style.display = 'block';
+      msgBox.style.color = '#e74c3c';
+      msgBox.textContent = '❌ La contraseña actual no coincide con la clave registrada.';
+    }
+    alert('Error: La contraseña actual es incorrecta.');
+    return;
+  }
+
+  if (nueva.length < 4) {
+    alert('La nueva clave debe tener al menos 4 caracteres.');
+    return;
+  }
+
+  setSuperadminPass(nueva);
+
+  document.getElementById('cfg-pass-actual').value = '';
+  document.getElementById('cfg-pass-nueva').value = '';
+
+  if (msgBox) {
+    msgBox.style.display = 'block';
+    msgBox.style.color = '#27ae60';
+    msgBox.textContent = '✅ ¡Clave maestra actualizada exitosamente en el sistema!';
+  }
+
+  alert('¡Clave Maestra del Superadmin actualizada con éxito! A partir de ahora, el sistema exigirá esta nueva contraseña para el acceso total.');
 });
 
 // ============================================================
